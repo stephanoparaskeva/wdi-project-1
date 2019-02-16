@@ -75,6 +75,9 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(pauseX)
       }
       htmlY[positionY].children[positionX].style.background = 'red'
+      htmlY[positionY].children[positionX-1].style.background = 'red'
+      htmlY[positionY-1].children[positionX].style.background = 'red'
+      htmlY[positionY-1].children[positionX-1].style.background = 'red'
       axis[positionY][positionX] = 2
       console.log(positionX)
       console.log(positionY)
@@ -85,7 +88,10 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(pauseX)
         clearInterval(moveX)
       }
-      htmlY[positionY].children[positionX].style.background = 'white'
+      // htmlY[positionY].children[positionX].style.background = 'white'
+      htmlY[positionY].children[positionX-1].style.background = 'white'
+      htmlY[positionY-1].children[positionX].style.background = 'white'
+      htmlY[positionY-1].children[positionX-1].style.background = 'white'
       console.log(positionX, 'positionX')
       console.log(positionY, 'positionY')
       axis[positionY][positionX] = 0
@@ -103,6 +109,9 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(pauseY)
       }
       htmlY[positionY].children[positionX].style.background = 'red'
+      htmlY[positionY].children[positionX-1].style.background = 'red'
+      htmlY[positionY-1].children[positionX].style.background = 'red'
+      htmlY[positionY-1].children[positionX-1].style.background = 'red'
       axis[positionY][positionX] = 2
       console.log(positionX)
       console.log(positionY)
@@ -113,7 +122,10 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(pauseY)
         clearInterval(moveY)
       }
-      htmlY[positionY].children[positionX].style.background = 'white'
+      // htmlY[positionY].children[positionX].style.background = 'white'
+      htmlY[positionY].children[positionX-1].style.background = 'white'
+      htmlY[positionY-1].children[positionX].style.background = 'white'
+      htmlY[positionY-1].children[positionX-1].style.background = 'white'
       axis[positionY][positionX] = 0
       downRight ? ++positionY : --positionY
 
