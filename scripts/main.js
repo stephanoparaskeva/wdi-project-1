@@ -1,9 +1,11 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-  const xAxis = [1,0,0,0,0,0,0,0,0,1]
-  const yAxis = [
+  const htmlX = document.querySelectorAll('.X')
+  const htmlY = document.querySelectorAll('.Y')
+
+  const lilAxis = [1,0,0,0,0,0,0,0,0,1]
+  const axis = [
     [1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,1],
@@ -14,7 +16,9 @@ window.addEventListener('DOMContentLoaded', () => {
     [1,0,0,0,0,0,0,0,0,1],
     [1,1,1,1,1,1,1,1,1,1]
 ]
-  let position = 5
+  let positionX = 5
+  let positionY = 4
+  console.log(axis)
   // class Movement {
   //   constructor() {
   //     // this.xDirection = xDirection
@@ -27,31 +31,58 @@ window.addEventListener('DOMContentLoaded', () => {
   //
   //   }
 
-  let move
-  let pause
+  let moveX
+  let pauseX
+  let moveY
+  let pauseY
 
-  const wayToMove = function(axis, downRight) {
-    move = setInterval(function() {
-      if (axis[downRight ? position + 1 : position - 1] !== 0) {
-        clearInterval(move)
-        clearInterval(pause)
+  const leftRight = function(axis, downRight) {
+    moveX = setInterval(function() {
+      if (axis[positionY][downRight ? positionX + 1 : positionX - 1] !== 0) {
+        clearInterval(moveX)
+        clearInterval(pauseX)
       }
-      axis[position] = 2
+      axis[positionY][positionX] = 2
+      console.log(positionX)
+      console.log(positionY)
 
-      console.log(axis)
     }, 200)
-    pause = setInterval(function() {
-      if (axis[downRight ? position +1 : position -1] !== 0) {
-        clearInterval(pause)
-        clearInterval(move)
+    pauseX = setInterval(function() {
+      if (axis[positionY][downRight ? positionX +1 : positionX -1] !== 0) {
+        clearInterval(pauseX)
+        clearInterval(moveX)
       }
-      axis[position] = 0
-      downRight ? ++position : --position
-      console.log(position)
+      axis[positionY][positionX] = 0
+      downRight ? ++positionX : --positionX
+      // console.log(axis)
     }, 200)
   }
 
-console.log(pause)
+
+  const upDown = function(axis, downRight) {
+    moveY = setInterval(function() {
+      if (axis[downRight ? positionY + 1 : positionY - 1][positionX] !== 0) {
+        clearInterval(moveY)
+        clearInterval(pauseY)
+      }
+      axis[positionY][positionX] = 2
+      console.log(positionX)
+      console.log(positionY)
+
+    }, 200)
+    pauseY = setInterval(function() {
+      if (axis[downRight ? positionY +1 : positionY -1][positionX] !== 0) {
+        clearInterval(pauseY)
+        clearInterval(moveY)
+      }
+      axis[positionY][positionX] = 0
+      downRight ? ++positionY : --positionY
+      // console.log(axis)
+      // console.log(position)
+    }, 200)
+  }
+
+
 
 
 // const items = document.querySelector('.item1')
@@ -68,7 +99,7 @@ console.log(pause)
 
   // document.onkeydown('onkeydown', (e) => {
   //   if (e.KeyCode === 37) {
-  //     wayToMove(xAxis, false)
+  //     wayToMove(axis, false)
   //   }
   //   if (e.KeyCode === 38) {
   //     wayToMove(yAxis, false)
@@ -77,7 +108,7 @@ console.log(pause)
   //     wayToMove(xAxis, true)
   //   }
   //   if (e.KeyCode === 40) {
-  //     wayToMove(yAxis, true)
+  //     wayToMaxisAxis, true)
   //   }
   // })
 
@@ -85,30 +116,38 @@ console.log(pause)
     e = e || window.event
     switch(e.which || e.keyCode) {
       case 37:
-      clearInterval(move)
-      clearInterval(pause)
-        wayToMove(xAxis, false)
+      clearInterval(moveX)
+      clearInterval(pauseX)
+      clearInterval(moveY)
+      clearInterval(pauseY)
+        leftRight(axis, false)
 
         break
 
       case 38:
-        clearInterval(move)
-        clearInterval(pause)
-        wayToMove(yAxis, false)
+      clearInterval(moveX)
+      clearInterval(pauseX)
+      clearInterval(moveY)
+      clearInterval(pauseY)
+        upDown(axis, false)
 
         break
 
       case 39:
-      clearInterval(move)
-      clearInterval(pause)
-        wayToMove(xAxis, true)
+      clearInterval(moveX)
+      clearInterval(pauseX)
+      clearInterval(moveY)
+      clearInterval(pauseY)
+        leftRight(axis, true)
 
         break
 
       case 40:
-      clearInterval(move)
-      clearInterval(pause)
-        wayToMove(yAxis, true)
+      clearInterval(moveX)
+      clearInterval(pauseX)
+      clearInterval(moveY)
+      clearInterval(pauseY)
+        upDown(axis, true)
 
         break
 
