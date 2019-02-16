@@ -3,18 +3,26 @@
 }
 
 body {
+  height: 1300px;
   main {
 
-    .Y {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    .container1 {
+
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      .X {
+      // flex-wrap: wrap;
+      width: 900px;
+      height: 750px;
+
+      .Y {
         display: flex;
         flex-flow: column wrap;
+        width: 3.6%;
       .items {
-        width: 90px;
-        height: 60px;
+        height: 2.7%;
         border: 1px solid black;
       }
       }
