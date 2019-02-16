@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  main {
+    .item {
+      width: 300px;
+      height: 300px;
+      border: 2px solid black;
+    }
+  }
+}
