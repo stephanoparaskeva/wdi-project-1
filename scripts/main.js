@@ -60,12 +60,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlScore = document.querySelector('.score')
 
   //variables
-  let positionX = 2
-  let positionY = 2
+  let positionA = 2
+  let positionB = 2
+  let positionGhostX = 13
+  let positionGhostY = 16
   let imagePositionY = 0
   let score = 0
   let move
   let pause
+  let pacMan
 
   //map
   htmlY.forEach(function(item) {
@@ -90,33 +93,33 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const setBackground = (color) => {
-    htmlY[positionY].children[positionX].style.background = color
-    htmlY[positionY].children[positionX-1].style.background = color
-    htmlY[positionY-1].children[positionX].style.background = color
-    htmlY[positionY-1].children[positionX-1].style.background = color
+    htmlY[positionB].children[positionA].style.background = color
+    htmlY[positionB].children[positionA-1].style.background = color
+    htmlY[positionB-1].children[positionA].style.background = color
+    htmlY[positionB-1].children[positionA-1].style.background = color
 
   }
   const createPacMan = () => {
-    htmlY[positionY].children[positionX].style.backgroundImage = "url('images/bottomRight.png')"
-    htmlY[positionY].children[positionX].style.backgroundSize = '16px 14px'
-    htmlY[positionY].children[positionX-1].style.backgroundImage = "url('images/bottomLeft.png')"
-    htmlY[positionY].children[positionX-1].style.backgroundSize = '16px 14px'
-    htmlY[positionY-1].children[positionX].style.backgroundImage = "url('images/topRight.png')"
-    htmlY[positionY-1].children[positionX].style.backgroundSize = '16px 14px'
-    htmlY[positionY-1].children[positionX-1].style.backgroundImage = "url('images/topLeft.png')"
-    htmlY[positionY-1].children[positionX-1].style.backgroundSize = '16px 14px'
+    htmlY[positionB].children[positionA].style.backgroundImage = "url('images/bottomRight.png')"
+    htmlY[positionB].children[positionA].style.backgroundSize = '16px 14px'
+    htmlY[positionB].children[positionA-1].style.backgroundImage = "url('images/bottomLeft.png')"
+    htmlY[positionB].children[positionA-1].style.backgroundSize = '16px 14px'
+    htmlY[positionB-1].children[positionA].style.backgroundImage = "url('images/topRight.png')"
+    htmlY[positionB-1].children[positionA].style.backgroundSize = '16px 14px'
+    htmlY[positionB-1].children[positionA-1].style.backgroundImage = "url('images/topLeft.png')"
+    htmlY[positionB-1].children[positionA-1].style.backgroundSize = '16px 14px'
 
   }
 
   const removeBorder = () => {
-    htmlY[positionY].children[positionX].style.borderBottomLeftRadius = '0px'
-    htmlY[positionY].children[positionX-1].style.borderBottomLeftRadius = '0px'
-    htmlY[positionY-1].children[positionX].style.borderBottomLeftRadius = '0px'
-    htmlY[positionY-1].children[positionX-1].style.borderBottomLeftRadius = '0px'
+    htmlY[positionB].children[positionA].style.borderBottomLeftRadius = '0px'
+    htmlY[positionB].children[positionA-1].style.borderBottomLeftRadius = '0px'
+    htmlY[positionB-1].children[positionA].style.borderBottomLeftRadius = '0px'
+    htmlY[positionB-1].children[positionA-1].style.borderBottomLeftRadius = '0px'
   }
 
-  //movement
-  const movePath = function(axis, upDown, leftRight, up, right) {
+  //movement position a = x position y = b
+  const movePath = function(axis, upDown, leftRight, up, right, pacMan, ghost, positionX, positionY) {
     move = setInterval(function() {
       if (upDown) {
         if ((axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) ||
@@ -131,7 +134,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       createPacMan()
       // setBackground('yellow')
-      if (axis[positionY][positionX] === 2) {
+      if (pacMan && axis[positionA][positionB] === 2) {
         score += 10
         htmlScore.innerHTML = `Score ${score}`
       }
@@ -157,6 +160,16 @@ window.addEventListener('DOMContentLoaded', () => {
       } else if (upDown) {
         up ? --positionY : ++positionY
       }
+      if (pacMan && leftRight) {
+        right ? ++positionA : --positionA
+      } else if (pacMan && upDown) {
+        up ? --positionB : ++positionB
+      }
+      if (ghost && leftRight) {
+        right ? ++positionGhostX : --positionGhostX
+      } else if (ghost && upDown) {
+        up ? --positionGhostY : ++positionGhostY
+      }
     }, 160)
   }
 
@@ -164,24 +177,24 @@ window.addEventListener('DOMContentLoaded', () => {
   document.onkeydown = function(e) {
     e = e || window.event
     switch(e.which || e.keyCode) {
-      case 37:
+      case 37: //left
         clearAllInvervals()
-        movePath(axis, false, true, false, false)
+        movePath(axis, false, true, false, false, true, false, positionA, positionB)
         break
 
-      case 38:
+      case 38: //up
         clearAllInvervals()
-        movePath(axis, true, false, true, false)
+        movePath(axis, true, false, true, false, true, false, positionA, positionB)
         break
 
-      case 39:
+      case 39: //right
         clearAllInvervals()
-        movePath(axis, false, true, false, true)
+        movePath(axis, false, true, false, true, true, false, positionA, positionB)
         break
 
-      case 40:
+      case 40: //down
         clearAllInvervals()
-        movePath(axis, true, false, false, false)
+        movePath(axis, true, false, false, false, true, false, positionA, positionB)
         break
 
       default: return
@@ -189,8 +202,8 @@ window.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
   }
 
-  // //score
-  // let score = 0
+  //ai
+
 
 
 }) // close for DOMContentLoaded
