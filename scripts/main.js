@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-  // htmlY[positionY].children[positionX].innerHTML = 'hello'
+  let htmlNewY = document.createElement('div')
+  htmlNewY.setAttribute('class', 'Y')
+  document.body.appendChild(div)
 
   const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -46,10 +48,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let positionX = 2
   let positionY = 2
   let imagePositionY = 0
-  let moveX
-  let pauseX
-  let moveY
-  let pauseY
+  let move
+  let pause
 
   //map
   htmlY.forEach(function(item) {
@@ -64,9 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
     imagePositionY++
   })
 
-  let move
-  let pause
-
+  //functions
   const clearAllInvervals = () => {
     clearInterval(move)
     clearInterval(pause)
@@ -79,7 +77,7 @@ window.addEventListener('DOMContentLoaded', () => {
     htmlY[positionY-1].children[positionX-1].style.background = color
   }
 
-
+  //movement
   const movePath = function(axis, upDown, leftRight, up, right) {
     move = setInterval(function() {
       if (upDown) {
@@ -122,24 +120,24 @@ window.addEventListener('DOMContentLoaded', () => {
     e = e || window.event
     switch(e.which || e.keyCode) {
       case 37:
-      clearAllInvervals()
-      movePath(axis, false, true, false, false)
-      break
+        clearAllInvervals()
+        movePath(axis, false, true, false, false)
+        break
 
       case 38:
-      clearAllInvervals()
-      movePath(axis, true, false, true, false)
-      break
+        clearAllInvervals()
+        movePath(axis, true, false, true, false)
+        break
 
       case 39:
-      clearAllInvervals()
-      movePath(axis, false, true, false, true)
-      break
+        clearAllInvervals()
+        movePath(axis, false, true, false, true)
+        break
 
       case 40:
-      clearAllInvervals()
-      movePath(axis, true, false, false, false)
-      break
+        clearAllInvervals()
+        movePath(axis, true, false, false, false)
+        break
 
       default: return
     }

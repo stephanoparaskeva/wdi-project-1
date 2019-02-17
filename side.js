@@ -15,23 +15,6 @@ const clearAllInvervals = () => {
   clearInterval(moveY)
   clearInterval(pauseY)
 }
-
-const clearXintervals = () => {
-  clearInterval(moveX)
-  clearInterval(pauseX)
-}
-const clearYintervals = () => {
-  clearInterval(moveY)
-  clearInterval(pauseY)
-}
-
-const setBackground = (color) => {
-  htmlY[positionY].children[positionX].style.background = color
-  htmlY[positionY].children[positionX-1].style.background = color
-  htmlY[positionY-1].children[positionX].style.background = color
-  htmlY[positionY-1].children[positionX-1].style.background = color
-}
-
 let downRight
 let upLeft
 let axis
@@ -39,84 +22,110 @@ let right
 let up
 let down
 let left
-let pause
-let move
 
 
 
-(axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) || //////only want to activate if up or down move
-(axis[up ? positionY - 2 : positionY + 1][up ? positionX - 1 : positionX - 1] === 1)
+(axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) || (axis[up ? positionY - 2 : positionY + 1][up ? positionX - 1 : positionX - 1] === 1)
 
-(axis[right ? positionY : positionY][right ? positionX + 1 : positionX - 1 ] === 1) || /// only want to activate if left or right
-(axis[right ? positionY - 1 : positionY - 1][right ? positionX + 1 : positionX - 1 ] === 1)
-
-const setBackground = (color) => {
-  htmlY[positionY].children[positionX].style.background = color
-  htmlY[positionY].children[positionX-1].style.background = color
-  htmlY[positionY-1].children[positionX].style.background = color
-  htmlY[positionY-1].children[positionX-1].style.background = color
-}
+(axis[right ? positionY : positionY][right ? positionX + 1 : positionX - 1 ] === 1) || (axis[right ? positionY - 1 : positionY - 1][right ? positionX +1 : positionX - 1 ] === 1)
 
 
-const movePath = function(axis, upDown, leftRight, up, right) {
-  move = setInterval(function() {
-    if (upDown) {
-      if ((axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) ||
-      (axis[up ? positionY - 2 : positionY + 1][up ? positionX - 1 : positionX - 1] === 1)) {
-        clearAllInvervals()
-      }
-    } else if (leftRight) {
-      if ((axis[right ? positionY : positionY][right ? positionX + 1 : positionX - 1 ] === 1) ||
-        (axis[right ? positionY - 1 : positionY - 1][right ? positionX + 1 : positionX - 1 ] === 1)) {
-        clearAllInvervals()
-      }
+const leftRight = function(axis, downRight, upLeft) {
+  moveX = setInterval(function() {
+    if (axis[positionY][downRight ? positionX + 1 : positionX - 2] === 1)
+    {
+      clearInterval(moveX)
+      clearInterval(pauseX)
+    } else if (axis[upLeft ? positionY - 1 : positionY + 1][positionX] === 1) {
+      clearInterval(moveY)
+      clearInterval(pauseY)
+      console.log(positionY , 'positionY')
     } else
-      setBackground('yellow')
+      htmlY[positionY].children[positionX].style.background = 'red'
+    htmlY[positionY].children[positionX-1].style.background = 'yellow'
+    htmlY[positionY-1].children[positionX].style.background = 'yellow'
+    htmlY[positionY-1].children[positionX-1].style.background = 'yellow'
     axis[positionY][positionX] = 2
   }, 200)
-  pause = setInterval(function() {
-    if (upDown) {
-      if ((axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) ||
-      (axis[up ? positionY - 2 : positionY + 1][up ? positionX - 1 : positionX - 1] === 1)) {
-        clearYintervals()
-      }
-    } else if (leftRight) {
-      if ((axis[right ? positionY : positionY][right ? positionX + 1 : positionX - 1 ] === 1) ||
-        (axis[right ? positionY - 1 : positionY - 1][right ? positionX + 1 : positionX - 1 ] === 1)) {
-        clearXintervals()
-      }
-    } else
-      setBackground('black')
-    axis[positionY][positionX] = 0
-    if (leftRight)  {
-      right ? ++positionX : --positionX
-    } else if (upDown) {
-      up ? --positionY : ++positionY
+  pauseX = setInterval(function() {
+    if (axis[positionY][downRight ? positionX + 1 : positionX - 2] === 1)
+    {
+      clearInterval(pauseX)
+      clearInterval(moveX)
     }
+    else if (axis[upLeft ? positionY - 1 : positionY + 1][positionX] === 1) {
+      clearInterval(moveY)
+      clearInterval(pauseY)
+      console.log(positionY , 'positionY')
+    } else
+    htmlY[positionY].children[positionX].style.background = 'black'
+    htmlY[positionY].children[positionX-1].style.background = 'black'
+    htmlY[positionY-1].children[positionX].style.background = 'black'
+    htmlY[positionY-1].children[positionX-1].style.background = 'black'
+    axis[positionY][positionX] = 0
+    downRight ? ++positionX : --positionX //this works
   }, 260)
 }
+
+const upDown = function(axis, downRight, upLeft) {
+  moveY = setInterval(function() {
+    if (axis[positionY][downRight ? positionX : positionX ] === 1)
+    {
+      clearInterval(moveX)
+      clearInterval(pauseX)
+    } else if (axis[upLeft ? positionY - 2 : positionY + 1][positionX] === 1) {
+      clearInterval(moveY)
+      clearInterval(pauseY)
+      console.log(positionY , 'positionY')
+    } else
+    htmlY[positionY].children[positionX].style.background = 'red'
+    htmlY[positionY].children[positionX-1].style.background = 'yellow'
+    htmlY[positionY-1].children[positionX].style.background = 'yellow'
+    htmlY[positionY-1].children[positionX-1].style.background = 'yellow'
+    axis[positionY][positionX] = 2
+  }, 200)
+  pauseY = setInterval(function() {
+    if (axis[positionY][downRight ? positionX + 1 : positionX ] === 1)
+    {
+      clearInterval(pauseX)
+      clearInterval(moveX)
+    } else if (axis[upLeft ? positionY - 2 : positionY + 1][positionX] === 1) {
+      clearInterval(moveY)
+      clearInterval(pauseY)
+      console.log(positionY , 'positionY')
+    } else
+    htmlY[positionY].children[positionX].style.background = 'black'
+    htmlY[positionY].children[positionX-1].style.background = 'black'
+    htmlY[positionY-1].children[positionX].style.background = 'black'
+    htmlY[positionY-1].children[positionX-1].style.background = 'black'
+    axis[positionY][positionX] = 0
+    downRight ? ++positionY : --positionY
+  }, 260)
+}
+
+
 
 document.onkeydown = function(e) {
   e = e || window.event
   switch(e.which || e.keyCode) {
     case 37:
     clearAllInvervals()
-    movePath(axis, false, true, false, false)
+    leftRight(axis, false, false)
     break
 
     case 38:
     clearAllInvervals()
-    movePath(axis, true, false, true, false)
+    upDown(axis, false, true)
     break
 
     case 39:
     clearAllInvervals()
-    movePath(axis, false, true, false, true)
+    leftRight(axis, true, true)
     break
 
     case 40:
     clearAllInvervals()
-    movePath(axis, true, false, false, false)
+    upDown(axis, true, false)
     break
 
     default: return
