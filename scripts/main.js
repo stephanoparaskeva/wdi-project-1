@@ -45,10 +45,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let positionX = 1
   let positionY = 1
+  let imagePositionX = 0
+  let imagePositionY = 0
   let moveX
   let pauseX
   let moveY
   let pauseY
+
+  //map
+
+  htmlY.forEach(function(item) {
+    for(let i = 0; i < 28; i++) {
+    if (axis[imagePositionY][i] === 1) {
+      item.children[i].style.background = 'blue'
+    }else if (axis[imagePositionY][i] === 0){
+      item.children[i].style.background = 'black'
+    }
+  }
+
+    imagePositionY++
+  })
+
 
   const leftRight = function(axis, downRight) {
     moveX = setInterval(function() {

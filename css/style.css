@@ -8,9 +8,6 @@ body main {
   flex-direction: column;
   align-items: center; }
   body main .container1 {
-    background-image: url("../images/background.png");
-    background-position: center;
-    background-size: 500px 510px;
     height: 505px;
     width: 465px;
     flex-wrap: nowrap;
