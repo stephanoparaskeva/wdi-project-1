@@ -94,13 +94,21 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlY[this.positionY].children[this.positionX].style.background = this.color
     }
     setBlack() {
-      htmlY[this.positionY].children[this.positionX].style.background = 'black'
+      if (axis[this.positionY][this.positionX] === 0 ||
+        axis[this.positionY][this.positionX] === 5) {
+        htmlY[this.positionY].children[this.positionX].style.background = 'black'
+      } else if (axis[this.positionY][this.positionX] === 2) {
+        htmlY[this.positionY].children[this.positionX].style.backgroundImage
+        = "url('images/pellets.jpg')"
+        htmlY[this.positionY].children[this.positionX].style.backgroundSize
+        = 'contain'
+      }
     }
   }
 
   //objects
   const pacManObj = new Pacman(2,2)
-  const inky = new Ghost(14,16, 'blue')
+  const inky = new Ghost(14,16, 'cyan')
   const pinky = new Ghost(13,16, 'pink')
   const blinky = new Ghost(12,16, 'red')
   const clyde = new Ghost(11,16, 'orange')
@@ -115,7 +123,8 @@ window.addEventListener('DOMContentLoaded', () => {
         item.children[f].style.background = 'blue'
         item.children[f].style.marginBottom = '3px'
       } else if (axis[imagePositionY][f] === 2){
-        item.children[f].style.background = 'black'
+        item.children[f].style.backgroundImage = "url('images/pellets.jpg')"
+        item.children[f].style.backgroundSize = 'contain'
       } else if (axis[imagePositionY][f] === 5){
         item.children[f].style.background = 'black'
       }
@@ -132,6 +141,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const loseCondition = (k) => {
+    if (ghostArray[k].positionX === pacManObj.positionX &&
+      ghostArray[k].positionY === pacManObj.positionY) {
+      console.log('you lose')
+    }
+  }
+
   const randomizer = () => {
     r = Math.floor(Math.random()*2)
   }
@@ -142,6 +158,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ghostArray[k].secondaryX = ghostArray[k].positionX
     ghostArray[k].positionX += increment
     ghostArray[k].setBackground()
+    loseCondition(k)
   }
   const incrementYMovement = (increment, k) => {
     ghostArray[k].setBlack()
@@ -149,6 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ghostArray[k].secondaryX = ghostArray[k].positionX
     ghostArray[k].positionY += increment
     ghostArray[k].setBackground()
+    loseCondition(k)
   }
 
   //keypresses
@@ -162,7 +180,6 @@ window.addEventListener('DOMContentLoaded', () => {
           scoreRunner()
         }
         break
-
       case 38: //up
         if (pacManObj.moveDirection(0,-1) !== 1) {
           pacManObj.setBackground('black')
@@ -171,7 +188,6 @@ window.addEventListener('DOMContentLoaded', () => {
           scoreRunner()
         }
         break
-
       case 39: //right
         if (pacManObj.moveDirection(+1,0) !== 1) {
           pacManObj.setBackground('black')
@@ -180,7 +196,6 @@ window.addEventListener('DOMContentLoaded', () => {
           scoreRunner()
         }
         break
-
       case 40: //down
         if (pacManObj.moveDirection(0,+1) !== 1) {
           pacManObj.setBackground('black')
@@ -189,7 +204,6 @@ window.addEventListener('DOMContentLoaded', () => {
           scoreRunner()
         }
         break
-
       default: return
     }
     e.preventDefault()
@@ -207,7 +221,6 @@ window.addEventListener('DOMContentLoaded', () => {
         (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
       const movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
         (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-
       if (movementCheckLeft && movementCheckRight && r === 1) {
         incrementXMovement(-1, k)
       } else if (movementCheckLeft && movementCheckRight && r === 0) {
@@ -216,13 +229,13 @@ window.addEventListener('DOMContentLoaded', () => {
         incrementYMovement(-1, k)
       } else if (movementCheckUp && movementCheckDown && r === 0) {
         incrementYMovement(1, k)
-      } else if (movementCheckLeft) { //left
+      } else if (movementCheckLeft) {
         incrementXMovement(-1, k)
-      } else if (movementCheckUp) { //up
+      } else if (movementCheckUp) {
         incrementYMovement(-1, k)
-      } else if (movementCheckRight) { //right
+      } else if (movementCheckRight) {
         incrementXMovement(1, k)
-      } else if (movementCheckDown){ //down
+      } else if (movementCheckDown){
         incrementYMovement(1, k)
       }
     }
