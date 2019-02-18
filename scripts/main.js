@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-  //axis
+  //axis 17y 13x
   const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
     [5,5,5,5,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,5,5,5,5],
     [1,1,1,1,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,1,1,1,1],
-    [1,2,2,2,2,2,2,2,2,1,1,5,5,5,5,5,5,1,1,2,2,2,2,2,2,2,2,1],
+    [1,1,1,1,1,2,2,2,2,1,1,5,5,5,5,5,5,1,1,2,2,2,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1],
     [5,5,5,5,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,5,5,5,5],
     [5,5,5,5,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,5,5,5,5],
@@ -42,7 +42,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //html
   const gameContainer = document.querySelector('.game-container')
-
   for (let i = 0; i < 36; i++) {
     const createHtmlAxisY = document.createElement('div')
     createHtmlAxisY.setAttribute('class', 'Y')
@@ -58,19 +57,17 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlScore = document.querySelector('.score')
 
   //variables
-
   let imagePositionY = 0
   let score = 0
   let pathFind1 = 1
 
   //classes
-
   class Pacman {
     constructor(positioX, positionY) {
       this.positionX = positioX
       this.positionY = positionY
     }
-    moveAll(x, y) {
+    moveDirection(x, y) {
       if (axis[this.positionY + y][this.positionX + x] === 1) {
         return 1
       }
@@ -80,9 +77,37 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  //objects
+  class Ghost {
+    constructor(positioX, positionY, color) {
+      this.positionX = positioX
+      this.positionY = positionY
+      this.color = color
+      this.secondaryX = 0
+      this.secondaryY = 0
+    }
+    moveDirection(x, y) {
+      if (axis[this.positionY + y][this.positionX + x] === 1) {
+        return 1
+      }
+    }
+    setBackground() {
+      htmlY[this.positionY].children[this.positionX].style.background = this.color
+    }
+    setBlack() {
+      htmlY[this.positionY].children[this.positionX].style.background = 'black'
+    }
+  }
 
+  //objects
   const pacManObj = new Pacman(2,2)
+  const inky = new Ghost(14,16, 'blue')
+  const pinky = new Ghost(13,16, 'pink')
+  const blinky = new Ghost(12,16, 'red')
+  const clyde = new Ghost(11,16, 'orange')
+
+  //object array
+
+  const ghostArray = [inky, pinky, blinky, clyde]
 
   //map
   htmlY.forEach(function(item) {
@@ -92,7 +117,6 @@ window.addEventListener('DOMContentLoaded', () => {
         item.children[f].style.marginBottom = '3px'
       } else if (axis[imagePositionY][f] === 2){
         item.children[f].style.background = 'black'
-
       } else if (axis[imagePositionY][f] === 5){
         item.children[f].style.background = 'black'
       }
@@ -101,7 +125,6 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   //functions
-
   const scoreRunner = () => {
     if (axis[pacManObj.positionY][pacManObj.positionX] === 2) {
       score += 10
@@ -110,24 +133,16 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  //
-  // function evaluateSpaceAround(positionX, positionY, upDown, leftRight, right, up) {
-  //   if (upDown) {
-  //     if (axis[up ? positionY - 1: positionY + 1][positionX] === 1)  {
-  //       clearAllInvervals()
-  //     }
-  //   } else if (leftRight) {
-  //     if (axis[positionY][right ? positionX + 1 : positionX - 1 ] === 1) {
-  //       clearAllInvervals()
-  //     }
-  //   }
-  // }
+  let r = 0
+  const randomizer = () => {
+    r = Math.floor(Math.random()*2)
+  }
 
   //keypresses
   document.onkeydown = function(e) {
     switch(e.which || e.keyCode) {
       case 37: //left
-        if (pacManObj.moveAll(-1,0) !== 1) {
+        if (pacManObj.moveDirection(-1,0) !== 1) {
           scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionX -= 1
@@ -136,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
         break
 
       case 38: //up
-        if (pacManObj.moveAll(0,-1) !== 1) {
+        if (pacManObj.moveDirection(0,-1) !== 1) {
           scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionY -= 1
@@ -145,7 +160,7 @@ window.addEventListener('DOMContentLoaded', () => {
         break
 
       case 39: //right
-        if (pacManObj.moveAll(+1,0) !== 1) {
+        if (pacManObj.moveDirection(+1,0) !== 1) {
           scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionX += 1
@@ -154,7 +169,7 @@ window.addEventListener('DOMContentLoaded', () => {
         break
 
       case 40: //down
-        if (pacManObj.moveAll(0,+1) !== 1) {
+        if (pacManObj.moveDirection(0,+1) !== 1) {
           scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionY += 1
@@ -166,6 +181,71 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     e.preventDefault()
   }
+
+  //ghosts
+  const allGhostMove = setInterval(function() {
+
+    randomizer()
+
+    for (let k = 0; k < ghostArray.length; k++) {
+      let movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+      let movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+      let movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+      let movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+
+      if (movementCheckLeft && movementCheckRight && r === 1) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX -= 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckLeft && movementCheckRight && r === 0) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX += 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckUp && movementCheckDown && r === 1) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY -= 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckUp && movementCheckDown && r === 1) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY += 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckLeft) { //left
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX -= 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckUp) { //up
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY -= 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckRight) { //right
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX += 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      } else if (movementCheckDown){ //down
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY += 1 //only if this doesnt equal the previous position
+        ghostArray[k].setBackground()
+      }
+  }
+  }, 100)
+
+
 
 
   // //ai
