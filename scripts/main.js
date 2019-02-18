@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     [1,1,2,2,2,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,2,2,2,1,1],
     [1,1,2,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,2,1,1],
     [1,1,2,1,1,2,1,1,2,2,2,2,1,1,1,1,2,2,2,2,1,1,2,1,1,2,1,1],
-    [1,1,2,2,2,2,1,1,2,1,1,2,1,1,1,1,2,1,1,2,1,1,2,2,2,2,1,1],
+    [1,1,2,2,2,2,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,2,2,2,2,1,1],
     [1,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1],
     [5,5,5,5,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,5,5,5,5],
     [5,5,5,5,1,2,1,1,2,1,1,1,1,2,2,1,1,1,1,2,1,1,2,1,5,5,5,5],
@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
   //variables
   let imagePositionY = 0
   let score = 0
-  let pathFind1 = 1
+  let r = 0
 
   //classes
   class Pacman {
@@ -106,7 +106,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const clyde = new Ghost(11,16, 'orange')
 
   //object array
-
   const ghostArray = [inky, pinky, blinky, clyde]
 
   //map
@@ -133,9 +132,23 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  let r = 0
   const randomizer = () => {
     r = Math.floor(Math.random()*2)
+  }
+
+  const incrementXMovement = (increment, k) => {
+    ghostArray[k].setBlack()
+    ghostArray[k].secondaryY = ghostArray[k].positionY
+    ghostArray[k].secondaryX = ghostArray[k].positionX
+    ghostArray[k].positionX += increment //only if this doesnt equal the previous position
+    ghostArray[k].setBackground()
+  }
+  const incrementYMovement = (increment, k) => {
+    ghostArray[k].setBlack()
+    ghostArray[k].secondaryY = ghostArray[k].positionY
+    ghostArray[k].secondaryX = ghostArray[k].positionX
+    ghostArray[k].positionY += increment //only if this doesnt equal the previous position
+    ghostArray[k].setBackground()
   }
 
   //keypresses
@@ -182,152 +195,37 @@ window.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
   }
 
+
+
   //ghosts
-  const allGhostMove = setInterval(function() {
+  const ghostMovementLogic = setInterval(function() {
 
     randomizer()
 
     for (let k = 0; k < ghostArray.length; k++) {
-      let movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-      let movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-      let movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-      let movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+      const movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+      const movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+      const movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+      const movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
 
       if (movementCheckLeft && movementCheckRight && r === 1) {
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionX -= 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementXMovement(-1, k)
       } else if (movementCheckLeft && movementCheckRight && r === 0) {
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionX += 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementXMovement(1, k)
       } else if (movementCheckUp && movementCheckDown && r === 1) {
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionY -= 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
-      } else if (movementCheckUp && movementCheckDown && r === 1) {
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionY += 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementYMovement(-1, k)
+      } else if (movementCheckUp && movementCheckDown && r === 0) {
+        incrementYMovement(1, k)
       } else if (movementCheckLeft) { //left
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionX -= 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementXMovement(-1, k)
       } else if (movementCheckUp) { //up
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionY -= 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementYMovement(-1, k)
       } else if (movementCheckRight) { //right
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionX += 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementXMovement(1, k)
       } else if (movementCheckDown){ //down
-        ghostArray[k].setBlack()
-        ghostArray[k].secondaryY = ghostArray[k].positionY
-        ghostArray[k].secondaryX = ghostArray[k].positionX
-        ghostArray[k].positionY += 1 //only if this doesnt equal the previous position
-        ghostArray[k].setBackground()
+        incrementYMovement(1, k)
       }
-  }
+    }
   }, 100)
 
-
-
-
-  // //ai
-  //
-  // const aiEvaluateSpaceAround = (positionX, positionY, right, up) => {
-  //   if ((axis[up ? positionY - 2: positionY + 1][up ? positionX : positionX] === 1) ||
-  //     (axis[up ? positionY - 2 : positionY + 1][up ? positionX - 1 : positionX - 1] === 1)) {
-  //     pathFind1 = 1
-  //     console.log(pathFind1, 'pathFind now set to 1')} //upDown
-  //    else if ((axis[right ? positionY - 1 : positionY - 1][right ? positionX + 1 : positionX - 2 ] === 1) ||
-  //     (axis[right ? positionY : positionY][right ? positionX + 1 : positionX - 2 ] === 1)) {
-  //     pathFind1 = 0
-  //     console.log(pathFind1, 'pathfind now set to 0')}  //leftRight
-  //   }
-  //
-  //
-  //
-  // let r = 0
-  // const randomizer = () => {
-  //   const r = Math.floor(Math.random()*2)
-  //   return r
-  // }
-  //
-  // const ghostObj = new Movement()
-  //
-  // const workMINIONS = setInterval(function() {
-  //   r = randomizer()
-  //   clearAllInvervals()
-  //   aiEvaluateSpaceAround(positionGhostX, positionGhostY, ghostObj.right, ghostObj.up)
-  //   if (pathFind1 === 1) {
-  //     if (r === 0) {
-  //       ghostObj.movePath(axis, false, true, false, false, false, true, positionGhostX, positionGhostY)
-  //       // pathFind1 = 0
-  //     } //left
-  //     else if (r === 1) {
-  //       ghostObj.movePath(axis, false, true, false, true, false, true, positionGhostX, positionGhostY)
-  //       // pathFind1 = 0
-  //     } //right
-  //   } else if (pathFind1 === 0) {
-  //     if (r === 0) {
-  //       ghostObj.movePath(axis, true, false, true, false, false, true, positionGhostX, positionGhostY)
-  //       // pathFind1 = 1
-  //     } //up
-  //     else if (r === 1) {
-  //       ghostObj.movePath(axis, true, false, false, false, false, true, positionGhostX, positionGhostY)
-  //       // pathFind1 = 1
-  //     }//down
-  //   }
-  // }, 2000)
-
-  // const ghostObj = new Movement()
-  // ghostObj.movePath(axis, false, true, false, true,false, true, positionGhostX, positionGhostY)
-  //
-  // let playing = 0
-  // const randomizer = () => {
-  //   return Math.floor(Math.random()*4)
-  // }
-  //
-  // while(playing < 10) {
-  //   playing++
-  //   let newR = randomizer()
-  //   const testInverval = setInterval(function() {
-  //
-  //     switch(newR) {
-  //     case 0: //left
-  //
-  //     console.log(positionGhostY)
-  //
-  //
-  //
-  //       ghostObj.movePath(axis, false, true, false, true,false, true, positionGhostX, positionGhostY)
-  //       break
-  //
-  //
-  //       default: return
-  //     }
-  //   }, 2000)
-  // }
-
 }) // close for DOMContentLoaded
-
-
-
-/// add constructor and refactor
-/// create ai and add more ghosts
