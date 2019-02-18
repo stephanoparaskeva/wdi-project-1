@@ -140,53 +140,53 @@ window.addEventListener('DOMContentLoaded', () => {
     ghostArray[k].setBlack()
     ghostArray[k].secondaryY = ghostArray[k].positionY
     ghostArray[k].secondaryX = ghostArray[k].positionX
-    ghostArray[k].positionX += increment //only if this doesnt equal the previous position
+    ghostArray[k].positionX += increment
     ghostArray[k].setBackground()
   }
   const incrementYMovement = (increment, k) => {
     ghostArray[k].setBlack()
     ghostArray[k].secondaryY = ghostArray[k].positionY
     ghostArray[k].secondaryX = ghostArray[k].positionX
-    ghostArray[k].positionY += increment //only if this doesnt equal the previous position
+    ghostArray[k].positionY += increment
     ghostArray[k].setBackground()
   }
 
   //keypresses
   document.onkeydown = function(e) {
-    switch(e.which || e.keyCode) {
+    switch(e.keyCode) {
       case 37: //left
         if (pacManObj.moveDirection(-1,0) !== 1) {
-          scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionX -= 1
           pacManObj.setBackground('yellow')
+          scoreRunner()
         }
         break
 
       case 38: //up
         if (pacManObj.moveDirection(0,-1) !== 1) {
-          scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionY -= 1
           pacManObj.setBackground('yellow')
+          scoreRunner()
         }
         break
 
       case 39: //right
         if (pacManObj.moveDirection(+1,0) !== 1) {
-          scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionX += 1
           pacManObj.setBackground('yellow')
+          scoreRunner()
         }
         break
 
       case 40: //down
         if (pacManObj.moveDirection(0,+1) !== 1) {
-          scoreRunner()
           pacManObj.setBackground('black')
           pacManObj.positionY += 1
           pacManObj.setBackground('yellow')
+          scoreRunner()
         }
         break
 
@@ -195,18 +195,18 @@ window.addEventListener('DOMContentLoaded', () => {
     e.preventDefault()
   }
 
-
-
   //ghosts
   const ghostMovementLogic = setInterval(function() {
-
     randomizer()
-
     for (let k = 0; k < ghostArray.length; k++) {
-      const movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-      const movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-      const movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) && (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-      const movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) && (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+      const movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+        (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+      const movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+        (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+      const movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+        (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+      const movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+        (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
 
       if (movementCheckLeft && movementCheckRight && r === 1) {
         incrementXMovement(-1, k)
