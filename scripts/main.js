@@ -1,11 +1,11 @@
 window.addEventListener('DOMContentLoaded', () => {
 
-  //axis 17y 13x
+  //axis
   const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1],
-    [1,1,2,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1],
+    [1,1,9,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,9,1,1],
     [1,1,2,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1],
     [1,1,2,1,1,1,2,1,1,1,2,2,2,1,1,2,2,2,1,1,1,2,1,1,1,2,1,1],
     [1,1,2,1,1,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,2,2,1,1,2,1,1],
@@ -17,8 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
     [5,5,5,5,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,5,5,5,5],
     [5,5,5,5,1,2,1,1,2,1,1,1,1,2,2,1,1,1,1,2,1,1,2,1,5,5,5,5],
     [5,5,5,5,1,2,1,1,2,1,1,1,1,5,5,1,1,1,1,2,1,1,2,1,5,5,5,5],
-    [5,5,5,5,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,5,5,5,5],
-    [1,1,1,1,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,1,1,1,1],
+    [5,5,5,5,1,2,1,1,2,1,1,5,6,5,5,6,5,1,1,2,1,1,2,1,5,5,5,5],
+    [1,1,1,1,1,2,1,1,2,1,1,5,6,6,6,6,5,1,1,2,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,2,2,2,1,1,5,5,5,5,5,5,1,1,2,2,2,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1],
@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
     [1,1,2,1,1,1,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,1,1,1,2,1,1],
     [1,2,2,2,2,2,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,2,2,2,2,2,1],
     [1,2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1],
-    [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,9,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,9,2,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
   ]
@@ -86,7 +86,8 @@ window.addEventListener('DOMContentLoaded', () => {
       this.secondaryY = 0
     }
     moveDirection(x, y) {
-      if (axis[this.positionY + y][this.positionX + x] === 1) {
+      if (axis[this.positionY + y][this.positionX + x] === 1 ||
+      axis[this.positionY + y][this.positionX + x] === 6) {
         return 1
       }
     }
@@ -102,16 +103,21 @@ window.addEventListener('DOMContentLoaded', () => {
         = "url('images/pellets.jpg')"
         htmlY[this.positionY].children[this.positionX].style.backgroundSize
         = 'contain'
+      } else if (axis[this.positionY][this.positionX] === 9) {
+        htmlY[this.positionY].children[this.positionX].style.backgroundImage
+        = "url('images/bigFruit.jpg')"
+        htmlY[this.positionY].children[this.positionX].style.backgroundSize
+        = 'contain'
       }
     }
   }
 
   //objects
-  const pacManObj = new Pacman(2,2)
-  const inky = new Ghost(14,16, 'cyan')
-  const pinky = new Ghost(13,16, 'pink')
-  const blinky = new Ghost(12,16, 'red')
-  const clyde = new Ghost(11,16, 'orange')
+  const pacManObj = new Pacman(14,27)
+  const inky = new Ghost(14,14, 'cyan')
+  const pinky = new Ghost(13,15, 'pink')
+  const blinky = new Ghost(14,15, 'red')
+  const clyde = new Ghost(13,14, 'orange')
 
   //object array
   const ghostArray = [inky, pinky, blinky, clyde]
@@ -125,7 +131,10 @@ window.addEventListener('DOMContentLoaded', () => {
       } else if (axis[imagePositionY][f] === 2){
         item.children[f].style.backgroundImage = "url('images/pellets.jpg')"
         item.children[f].style.backgroundSize = 'contain'
-      } else if (axis[imagePositionY][f] === 5){
+      } else if (axis[imagePositionY][f] === 9){
+        item.children[f].style.backgroundImage = "url('images/bigFruit.jpg')"
+        item.children[f].style.backgroundSize = 'contain'
+      } else if (axis[imagePositionY][f] === 5 || axis[imagePositionY][f] === 6){
         item.children[f].style.background = 'black'
       }
     }
@@ -136,6 +145,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const scoreRunner = () => {
     if (axis[pacManObj.positionY][pacManObj.positionX] === 2) {
       score += 10
+      htmlScore.innerHTML = `Score ${score}`
+      axis[pacManObj.positionY][pacManObj.positionX] = 0
+    } else if (axis[pacManObj.positionY][pacManObj.positionX] === 9) {
+      score += 50
       htmlScore.innerHTML = `Score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
     }
@@ -287,9 +300,7 @@ window.addEventListener('DOMContentLoaded', () => {
         (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
       let movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
         (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-      if (movementCheckUp && movementCheckDown && movementCheckLeft && movementCheckRight) {
-        incrementYMovement(-1, k) //up
-      } else if (movementCheckLeft && movementCheckRight && r === 1) {
+      if (movementCheckLeft && movementCheckRight && r === 1) {
         incrementXMovement(-1, k)  //left
         movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
           (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
@@ -370,35 +381,7 @@ window.addEventListener('DOMContentLoaded', () => {
           (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
         trackingXSameMoveDown(k, movementCheckDown)
       }
-    }
   }, 200)
-
-
-//not checking movement logic for second move.
-// storing the movement check in a variable BEFORE the new move
-
-  //tracking
-  //pacman has xy coordinates
-  //  if ghost y === pacman y (ARE THE SAME) move towards along x axis
-  // if pacman x < ghost x then ghost move left
-  // if pacman x > ghost x then ghost move right
-
-
-  //  if ghost x === pacman x (ARE THE SAME) move towards along y axis
-  // if pacman Y < ghost Y then ghost move up
-  // if pacman Y > ghost Y then ghost move down
-
-
-
-
-
-  //repulsion
-  //  if ghost y === pacman y move towards along x axis
-  //  if ghost x === pacman x move towards along y axis
-
-  //give more shits about walls
-  /// more if statements
-
 
 
 }) // close for DOMContentLoaded
