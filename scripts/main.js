@@ -60,6 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let imagePositionY = 0
   let score = 0
   let r = 0
+  let e = 0
 
   //classes
   class Pacman {
@@ -150,6 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const randomizer = () => {
     r = Math.floor(Math.random()*2)
+    e = Math.floor(Math.random()*2)
   }
 
   const incrementXMovement = (increment, k) => {
@@ -160,6 +162,9 @@ window.addEventListener('DOMContentLoaded', () => {
     ghostArray[k].setBackground()
     loseCondition(k)
   }
+
+
+
   const incrementYMovement = (increment, k) => {
     ghostArray[k].setBlack()
     ghostArray[k].secondaryY = ghostArray[k].positionY
@@ -168,6 +173,67 @@ window.addEventListener('DOMContentLoaded', () => {
     ghostArray[k].setBackground()
     loseCondition(k)
   }
+
+
+
+  //experimental
+  const trackingYSameMoveLeft = (k) => {
+    if (ghostArray[k].positionY === pacManObj.positionY) {
+      if (pacManObj.positionX < ghostArray[k].positionX) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX -= 1
+        ghostArray[k].setBackground()
+        loseCondition(k)
+      }
+    }
+  }
+
+  const trackingYSameMoveRight = (k) => {
+    if (ghostArray[k].positionY === pacManObj.positionY) {
+      if (pacManObj.positionX > ghostArray[k].positionX) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionX += 1
+        ghostArray[k].setBackground()
+        loseCondition(k)
+      }
+    }
+  }
+
+  const trackingXSameMoveUp = (k) => {
+    if (ghostArray[k].positionX === pacManObj.positionX) {
+      if (pacManObj.positionY < ghostArray[k].positionY) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY -= 1
+        ghostArray[k].setBackground()
+        loseCondition(k)
+      }
+    }
+  }
+
+  const trackingXSameMoveDown = (k) => {
+    if (ghostArray[k].positionX === pacManObj.positionX) {
+      if (pacManObj.positionY > ghostArray[k].positionY) {
+        ghostArray[k].setBlack()
+        ghostArray[k].secondaryY = ghostArray[k].positionY
+        ghostArray[k].secondaryX = ghostArray[k].positionX
+        ghostArray[k].positionY += 1
+        ghostArray[k].setBackground()
+        loseCondition(k)
+      }
+    }
+  }
+
+
+
+///////
+
+
 
   //keypresses
   document.onkeydown = function(e) {
@@ -213,6 +279,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const ghostMovementLogic = setInterval(function() {
     randomizer()
     for (let k = 0; k < ghostArray.length; k++) {
+    //
+    //   if (ghostArray[k].positionX === pacManObj.positionX) {
+    //     if (pacManObj.positionY < ghostArray[k].positionY) {
+    //       e = 1
+    //     } else {
+    //       e = 0
+    //     }
+    //   }
+    //   if (ghostArray[k].positionY === pacManObj.positionY) {
+    //     if (pacManObj.positionX < ghostArray[k].positionX) {
+    //       r = 1
+    //     } else {
+    //       r = 0
+    //     }
+    //   }
+
       const movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
         (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
       const movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
@@ -222,23 +304,66 @@ window.addEventListener('DOMContentLoaded', () => {
       const movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
         (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
       if (movementCheckLeft && movementCheckRight && r === 1) {
-        incrementXMovement(-1, k)
+        incrementXMovement(-1, k)  //left
       } else if (movementCheckLeft && movementCheckRight && r === 0) {
-        incrementXMovement(1, k)
+        incrementXMovement(1, k) //right
       } else if (movementCheckUp && movementCheckDown && r === 1) {
-        incrementYMovement(-1, k)
+        incrementYMovement(-1, k) //up
       } else if (movementCheckUp && movementCheckDown && r === 0) {
-        incrementYMovement(1, k)
+        incrementYMovement(1, k) //down
+      } else if (movementCheckLeft && movementCheckUp && r === 0) {
+        incrementYMovement(-1, k) //up
+      } else if (movementCheckLeft && movementCheckUp && r === 1) {
+        incrementXMovement(-1, k) //left
+      } else if (movementCheckRight && movementCheckDown && r === 0) {
+        incrementYMovement(+1, k) //down
+      } else if (movementCheckRight && movementCheckDown && r === 1) {
+        incrementXMovement(+1, k) // right
+      } else if (movementCheckRight && movementCheckUp && r === 0) {
+        incrementYMovement(-1, k) //up
+      } else if (movementCheckRight && movementCheckUp && r === 1) {
+        incrementXMovement(+1, k) //left
+      } else if (movementCheckLeft && movementCheckDown && r === 0) {
+        incrementYMovement(+1, k) //down
+      } else if (movementCheckLeft && movementCheckDown && r === 1) {
+        incrementXMovement(-1, k) // right
       } else if (movementCheckLeft) {
-        incrementXMovement(-1, k)
+        incrementXMovement(-1, k) // left
       } else if (movementCheckUp) {
-        incrementYMovement(-1, k)
+        incrementYMovement(-1, k) //up
       } else if (movementCheckRight) {
-        incrementXMovement(1, k)
+        incrementXMovement(1, k) //right
       } else if (movementCheckDown){
-        incrementYMovement(1, k)
+        incrementYMovement(1, k) //down
       }
     }
   }, 100)
+
+
+
+
+  //tracking
+  //pacman has xy coordinates
+  //  if ghost y === pacman y (ARE THE SAME) move towards along x axis
+  // if pacman x < ghost x then ghost move left
+  // if pacman x > ghost x then ghost move right
+
+
+  //  if ghost x === pacman x (ARE THE SAME) move towards along y axis
+  // if pacman Y < ghost Y then ghost move up
+  // if pacman Y > ghost Y then ghost move down
+
+
+
+
+
+  //repulsion
+  //  if ghost y === pacman y move towards along x axis
+  //  if ghost x === pacman x move towards along y axis
+
+  //give more shits about walls
+  /// more if statements
+
+
 
 }) // close for DOMContentLoaded
