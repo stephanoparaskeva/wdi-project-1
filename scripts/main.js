@@ -55,13 +55,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const htmlY = document.querySelectorAll('.Y')
   const htmlScore = document.querySelector('.score')
+  const htmlLives = document.querySelector('.lives')
 
   //variables
+  let lives = 3
   let imagePositionY = 0
   let score = 0
   let r = 0
   let timerCount = 0
   let modifier = 1
+  let ghostMovementInterval
+  let loseBlocker = 0
 
   //classes
   class Pacman {
@@ -151,22 +155,48 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //functions
   const scoreRunner = () => {
-    if (axis[pacManObj.positionY][pacManObj.positionX] === 2) {
+    if (score === 3000) {
+      clearInterval(ghostMovementInterval)
+      for (let l = 0; l < ghostArray.length; l++) {
+        htmlY[ghostArray[l].positionY].children[ghostArray[l].positionX].style.background = 'black'
+      }
+    }  else if (axis[pacManObj.positionY][pacManObj.positionX] === 2) {
       score += 10
-      htmlScore.innerHTML = `Score ${score}`
+      htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
     } else if (axis[pacManObj.positionY][pacManObj.positionX] === 9) {
       score += 50
-      htmlScore.innerHTML = `Score ${score}`
+      htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
     }
   }
 
   const loseCondition = (k) => {
     if (ghostArray[k].positionX === pacManObj.positionX &&
-      ghostArray[k].positionY === pacManObj.positionY) {
-      console.log('you lose')
+      ghostArray[k].positionY === pacManObj.positionY && modifier === 1) {
+      clearInterval(ghostMovementInterval)
+      loseBlocker = 1
+      lives -= 1
+      htmlLives.innerHTML = `lives ${lives}`
+      pacManObj.positionX = 14
+      pacManObj.positionY = 27
+      for (let t = 0; t < ghostArray.length; t++) {
+        htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
+        ghostArray[t].positionX = 13
+        ghostArray[t].positionY = 14
+        htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
+        htmlY[14].children[13].style.background = 'black'
+      }
+      setTimeout(function() {
+        ghostMovementLogic()
+        loseBlocker = 0
+      }, 7000)
     }
+  }
+
+  const loseConditionKeyCall = () => {
+    for (let p = 0; p < ghostArray.length; p++)
+      loseCondition(p)
   }
 
   const bigFruit = () => {
@@ -177,8 +207,25 @@ window.addEventListener('DOMContentLoaded', () => {
         if (timerCount === 40) {
           clearInterval(tenSecondTimer)
           modifier = 1
+          timerCount = 0
         }
       }, 250)
+    }
+  }
+
+  const eatGhost = () => {
+    for (let n = 0; n < ghostArray.length; n++) {
+      if (modifier === -1 && pacManObj.positionX === ghostArray[n].positionX &&
+        pacManObj.positionY === ghostArray[n].positionY) {
+        score += 500
+        htmlScore.innerHTML = `score ${score}`
+        ghostArray[n].positionX = 1
+        ghostArray[n].positionY = 1
+        setTimeout(function() {
+          ghostArray[n].positionX = 13
+          ghostArray[n].positionY = 14
+        }, 3000)
+      }
     }
   }
 
@@ -260,39 +307,47 @@ window.addEventListener('DOMContentLoaded', () => {
   document.onkeydown = function(e) {
     switch(e.keyCode) {
       case 37: //left
-        if (pacManObj.moveDirection(-1,0) !== 1) {
+        if (pacManObj.moveDirection(-1,0) !== 1 && loseBlocker === 0) {
           pacManObj.setBackground('black')
           pacManObj.positionX -= 1
           bigFruit()
+          eatGhost()
           pacManObj.setBackground('yellow')
           scoreRunner()
+          loseConditionKeyCall()
         }
         break
       case 38: //up
-        if (pacManObj.moveDirection(0,-1) !== 1) {
+        if (pacManObj.moveDirection(0,-1) !== 1 && loseBlocker === 0) {
           pacManObj.setBackground('black')
           pacManObj.positionY -= 1
           bigFruit()
+          eatGhost()
           pacManObj.setBackground('yellow')
           scoreRunner()
+          loseConditionKeyCall()
         }
         break
       case 39: //right
-        if (pacManObj.moveDirection(+1,0) !== 1) {
+        if (pacManObj.moveDirection(+1,0) !== 1 && loseBlocker === 0) {
           pacManObj.setBackground('black')
           pacManObj.positionX += 1
           bigFruit()
+          eatGhost()
           pacManObj.setBackground('yellow')
           scoreRunner()
+          loseConditionKeyCall()
         }
         break
       case 40: //down
-        if (pacManObj.moveDirection(0,+1) !== 1) {
+        if (pacManObj.moveDirection(0,+1) !== 1 && loseBlocker === 0) {
           pacManObj.setBackground('black')
           pacManObj.positionY += 1
           bigFruit()
+          eatGhost()
           pacManObj.setBackground('yellow')
           scoreRunner()
+          loseConditionKeyCall()
         }
         break
       default: return
@@ -301,99 +356,104 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   //ghosts
-  const ghostMovementLogic = setInterval(function() {
-    for (let k = 0; k < ghostArray.length; k++) {
-      randomizer()
-      let movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
-        (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-      let movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
-        (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-      let movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
-        (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-      let movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
-        (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-      if (movementCheckLeft && movementCheckRight && r === 1) {
-        incrementXMovement(-1, k)  //left
-        movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+  const ghostMovementLogic = () => {
+    ghostMovementInterval = setInterval(function() {
+      eatGhost()
+      for (let k = 0; k < ghostArray.length; k++) {
+        randomizer()
+        let movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
           (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-        trackingYSameMoveLeft(k, movementCheckLeft, modifier)
-      } else if (movementCheckLeft && movementCheckRight && r === 0) {
-        incrementXMovement(1, k) //right
-        movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-        trackingYSameMoveRight(k, movementCheckRight, modifier)
-      } else if (movementCheckUp && movementCheckDown && r === 1) {
-        incrementYMovement(-1, k) //up
-        movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+        let movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
           (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-        trackingXSameMoveUp(k, movementCheckUp, modifier)
-      } else if (movementCheckUp && movementCheckDown && r === 0) {
-        incrementYMovement(1, k) //down
-        movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-        trackingXSameMoveDown(k, movementCheckDown, modifier)
-      } else if (movementCheckLeft && movementCheckUp && r === 0) {
-        incrementYMovement(-1, k) //up
-        movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-        trackingXSameMoveUp(k, movementCheckUp, modifier)
-      } else if (movementCheckLeft && movementCheckUp && r === 1) {
-        incrementXMovement(-1, k) //left
-        movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-        trackingYSameMoveLeft(k, movementCheckLeft, modifier)
-      } else if (movementCheckRight && movementCheckDown && r === 0) {
-        incrementYMovement(+1, k) //down
-        movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-        trackingXSameMoveDown(k, movementCheckDown, modifier)
-      } else if (movementCheckRight && movementCheckDown && r === 1) {
-        incrementXMovement(+1, k) // right
-        movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+        let movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
           (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-        trackingYSameMoveRight(k, movementCheckRight, modifier)
-      } else if (movementCheckRight && movementCheckUp && r === 0) {
-        incrementYMovement(-1, k) //up
-        movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-        trackingXSameMoveUp(k, movementCheckUp, modifier)
-      } else if (movementCheckRight && movementCheckUp && r === 1) {
-        incrementXMovement(+1, k) //left
-        movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-        trackingYSameMoveLeft(k, movementCheckLeft, modifier)
-      } else if (movementCheckLeft && movementCheckDown && r === 0) {
-        incrementYMovement(+1, k) //down
-        movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+        let movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
           (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-        trackingXSameMoveDown(k, movementCheckDown, modifier)
-      } else if (movementCheckLeft && movementCheckDown && r === 1) {
-        incrementXMovement(-1, k) // right
-        movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-        trackingYSameMoveRight(k, movementCheckRight, modifier)
-      } else if (movementCheckLeft) {
-        incrementXMovement(-1, k) // left
-        movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
-        trackingYSameMoveLeft(k, movementCheckLeft, modifier)
-      } else if (movementCheckUp) {
-        incrementYMovement(-1, k) //up
-        movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
-        trackingXSameMoveUp(k, movementCheckUp, modifier)
-      } else if (movementCheckRight) {
-        incrementXMovement(1, k) //right
-        movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
-          (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
-        trackingYSameMoveRight(k, movementCheckRight, modifier)
-      } else if (movementCheckDown){
-        incrementYMovement(1, k) //down
-        movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
-          (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
-        trackingXSameMoveDown(k, movementCheckDown, modifier)
+        if (movementCheckLeft && movementCheckRight && r === 1) {
+          incrementXMovement(-1, k)  //left
+          movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+          trackingYSameMoveLeft(k, movementCheckLeft, modifier)
+        } else if (movementCheckLeft && movementCheckRight && r === 0) {
+          incrementXMovement(1, k) //right
+          movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+          trackingYSameMoveRight(k, movementCheckRight, modifier)
+        } else if (movementCheckUp && movementCheckDown && r === 1) {
+          incrementYMovement(-1, k) //up
+          movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+          trackingXSameMoveUp(k, movementCheckUp, modifier)
+        } else if (movementCheckUp && movementCheckDown && r === 0) {
+          incrementYMovement(1, k) //down
+          movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+          trackingXSameMoveDown(k, movementCheckDown, modifier)
+        } else if (movementCheckLeft && movementCheckUp && r === 0) {
+          incrementYMovement(-1, k) //up
+          movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+          trackingXSameMoveUp(k, movementCheckUp, modifier)
+        } else if (movementCheckLeft && movementCheckUp && r === 1) {
+          incrementXMovement(-1, k) //left
+          movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+          trackingYSameMoveLeft(k, movementCheckLeft, modifier)
+        } else if (movementCheckRight && movementCheckDown && r === 0) {
+          incrementYMovement(+1, k) //down
+          movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+          trackingXSameMoveDown(k, movementCheckDown, modifier)
+        } else if (movementCheckRight && movementCheckDown && r === 1) {
+          incrementXMovement(+1, k) // right
+          movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+          trackingYSameMoveRight(k, movementCheckRight, modifier)
+        } else if (movementCheckRight && movementCheckUp && r === 0) {
+          incrementYMovement(-1, k) //up
+          movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+          trackingXSameMoveUp(k, movementCheckUp, modifier)
+        } else if (movementCheckRight && movementCheckUp && r === 1) {
+          incrementXMovement(+1, k) //left
+          movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+          trackingYSameMoveLeft(k, movementCheckLeft, modifier)
+        } else if (movementCheckLeft && movementCheckDown && r === 0) {
+          incrementYMovement(+1, k) //down
+          movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+          trackingXSameMoveDown(k, movementCheckDown, modifier)
+        } else if (movementCheckLeft && movementCheckDown && r === 1) {
+          incrementXMovement(-1, k) // right
+          movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+          trackingYSameMoveRight(k, movementCheckRight, modifier)
+        } else if (movementCheckLeft) {
+          incrementXMovement(-1, k) // left
+          movementCheckLeft = (ghostArray[k].moveDirection(-1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX - 1)
+          trackingYSameMoveLeft(k, movementCheckLeft, modifier)
+        } else if (movementCheckUp) {
+          incrementYMovement(-1, k) //up
+          movementCheckUp = (ghostArray[k].moveDirection(0,-1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY - 1)
+          trackingXSameMoveUp(k, movementCheckUp, modifier)
+        } else if (movementCheckRight) {
+          incrementXMovement(1, k) //right
+          movementCheckRight = (ghostArray[k].moveDirection(1,0) !== 1) &&
+            (ghostArray[k].secondaryX !== ghostArray[k].positionX + 1)
+          trackingYSameMoveRight(k, movementCheckRight, modifier)
+        } else if (movementCheckDown){
+          incrementYMovement(1, k) //down
+          movementCheckDown = (ghostArray[k].moveDirection(0,1) !== 1) &&
+            (ghostArray[k].secondaryY !== ghostArray[k].positionY + 1)
+          trackingXSameMoveDown(k, movementCheckDown, modifier)
+        }
       }
-    }
-  }, 100)
+    }, 200)
+  }
+
+  ghostMovementLogic()
 
 }) // close for DOMContentLoaded
