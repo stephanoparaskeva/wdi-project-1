@@ -56,6 +56,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlY = document.querySelectorAll('.Y')
   const htmlScore = document.querySelector('.score')
   const htmlLives = document.querySelector('.lives')
+  const htmlLoseOverlay = document.querySelector('.lose-overlay')
+  const htmlWinOverlay = document.querySelector('.win-overlay')
 
   //variables
   let lives = 3
@@ -157,6 +159,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const scoreRunner = () => {
     if (score === 3000) {
       clearInterval(ghostMovementInterval)
+      loseBlocker = 1
+      htmlWinOverlay.style.display = 'block'
       for (let l = 0; l < ghostArray.length; l++) {
         htmlY[ghostArray[l].positionY].children[ghostArray[l].positionX].style.background = 'black'
       }
@@ -176,7 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ghostArray[k].positionY === pacManObj.positionY && modifier === 1) {
       clearInterval(ghostMovementInterval)
       loseBlocker = 1
-      lives -= 1
+      if (lives > 0) lives -= 1
       htmlLives.innerHTML = `lives ${lives}`
       pacManObj.positionX = 14
       pacManObj.positionY = 27
@@ -184,13 +188,15 @@ window.addEventListener('DOMContentLoaded', () => {
         htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
         ghostArray[t].positionX = 13
         ghostArray[t].positionY = 14
-        htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
-        htmlY[14].children[13].style.background = 'black'
       }
       setTimeout(function() {
         ghostMovementLogic()
         loseBlocker = 0
-      }, 7000)
+      }, 3000)
+    }
+    if (lives === 0) {
+      htmlLoseOverlay.style.display = 'block'
+      clearInterval(ghostMovementInterval)
     }
   }
 
@@ -451,7 +457,7 @@ window.addEventListener('DOMContentLoaded', () => {
           trackingXSameMoveDown(k, movementCheckDown, modifier)
         }
       }
-    }, 200)
+    }, 120)
   }
 
   ghostMovementLogic()
