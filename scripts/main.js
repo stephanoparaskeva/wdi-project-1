@@ -58,6 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlLives = document.querySelector('.lives')
   const htmlLoseOverlay = document.querySelector('.lose-overlay')
   const htmlWinOverlay = document.querySelector('.win-overlay')
+  const htmlDieOverlay = document.querySelector('.die-overlay')
 
   //variables
   let lives = 3
@@ -128,10 +129,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //objects
   const pacManObj = new Pacman(14,27)
-  const inky = new Ghost(14,14, 'cyan')
-  const pinky = new Ghost(13,15, 'pink')
-  const blinky = new Ghost(14,15, 'red')
-  const clyde = new Ghost(13,14, 'orange')
+  const inky = new Ghost(14,14, 'purple')
+  const pinky = new Ghost(13,15, 'purple')
+  const blinky = new Ghost(14,15, 'purple')
+  const clyde = new Ghost(13,14, 'purple')
 
   //object array
   const ghostArray = [inky, pinky, blinky, clyde]
@@ -140,8 +141,7 @@ window.addEventListener('DOMContentLoaded', () => {
   htmlY.forEach(function(item) {
     for(let f = 0; f < axis[0].length; f++) {
       if (axis[imagePositionY][f] === 1) {
-        item.children[f].style.background = 'blue'
-        item.children[f].style.marginBottom = '3px'
+        item.children[f].style.marginTop = '5px'
       } else if (axis[imagePositionY][f] === 2){
         item.children[f].style.backgroundImage = "url('images/pellets.jpg')"
         item.children[f].style.backgroundSize = 'contain'
@@ -157,7 +157,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //functions
   const scoreRunner = () => {
-    if (score === 3000) {
+    if (score >= 3500) {
       clearInterval(ghostMovementInterval)
       loseBlocker = 1
       htmlWinOverlay.style.display = 'block'
@@ -184,6 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlLives.innerHTML = `lives ${lives}`
       pacManObj.positionX = 14
       pacManObj.positionY = 27
+      htmlDieOverlay.style.display = 'block'
       for (let t = 0; t < ghostArray.length; t++) {
         htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
         ghostArray[t].positionX = 13
@@ -191,12 +192,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       setTimeout(function() {
         ghostMovementLogic()
+        htmlDieOverlay.style.display = 'none'
         loseBlocker = 0
       }, 3000)
     }
     if (lives === 0) {
       htmlLoseOverlay.style.display = 'block'
       clearInterval(ghostMovementInterval)
+      htmlDieOverlay.style.display = 'none'
     }
   }
 
@@ -223,7 +226,7 @@ window.addEventListener('DOMContentLoaded', () => {
     for (let n = 0; n < ghostArray.length; n++) {
       if (modifier === -1 && pacManObj.positionX === ghostArray[n].positionX &&
         pacManObj.positionY === ghostArray[n].positionY) {
-        score += 500
+        score += 200
         htmlScore.innerHTML = `score ${score}`
         ghostArray[n].positionX = 1
         ghostArray[n].positionY = 1
@@ -318,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
           pacManObj.positionX -= 1
           bigFruit()
           eatGhost()
-          pacManObj.setBackground('yellow')
+          pacManObj.setBackground('#89F8F8')
           scoreRunner()
           loseConditionKeyCall()
         }
@@ -329,7 +332,7 @@ window.addEventListener('DOMContentLoaded', () => {
           pacManObj.positionY -= 1
           bigFruit()
           eatGhost()
-          pacManObj.setBackground('yellow')
+          pacManObj.setBackground('#89F8F8')
           scoreRunner()
           loseConditionKeyCall()
         }
@@ -340,7 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
           pacManObj.positionX += 1
           bigFruit()
           eatGhost()
-          pacManObj.setBackground('yellow')
+          pacManObj.setBackground('#89F8F8')
           scoreRunner()
           loseConditionKeyCall()
         }
@@ -351,7 +354,7 @@ window.addEventListener('DOMContentLoaded', () => {
           pacManObj.positionY += 1
           bigFruit()
           eatGhost()
-          pacManObj.setBackground('yellow')
+          pacManObj.setBackground('#89F8F8')
           scoreRunner()
           loseConditionKeyCall()
         }
@@ -457,7 +460,7 @@ window.addEventListener('DOMContentLoaded', () => {
           trackingXSameMoveDown(k, movementCheckDown, modifier)
         }
       }
-    }, 120)
+    }, 100)
   }
 
   ghostMovementLogic()

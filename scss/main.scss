@@ -3,9 +3,12 @@
 }
 
 body {
-  background: black;
+  background-image: url('../images/background.jpg');
+  background-size: 'contain';
+  background-position: center;
+  // background: purple;
   header {
-    height: 50px;
+    height: 100px;
   }
   main {
     display: flex;
@@ -13,26 +16,23 @@ body {
     align-items: center;
 
     .game-container {
-      // background-image: url('../images/background.png');
-      // background-position: center;
-      // background-size: 500px 510px;
-      height: 509px;
-      width: 464px;
+      margin-left: 51px;
+      margin-bottom: 15px;
+      height: 510px;
+      width: 455px;
       flex-wrap: nowrap;
       border-radius: 10px;
-      background: yellow;
-
-
+      // background: linear-gradient(to bottom right, #454ea0, dodgerblue);
+      border: 5px inset black;
+      box-shadow: 0 0 30px 15px #BC44DE;
+      box-shadow: 0 0 30px 15px #BC44DE;
       .Y {
         display: flex;
         flex-flow: column wrap;
-        width: 465px;
+        width: 445px;
         height: 14px;
-        // border: black solid 1px;
         .items {
           height: 100%;
-          // border: 0.016px dotted rgba(255,255,255,0.2);
-          // border-radius: 0px 4px 0px 4px;
         }
       }
     }
@@ -40,9 +40,9 @@ body {
   footer {
     display: flex;
     justify-content: space-around;
-    font-size: 20px;
+    font-size: 40px;
     color: white;
-    height: 100px;
+    height: 50px;
     .score {
     }
   }
@@ -50,22 +50,52 @@ body {
 
 .lose-overlay {
 text-align: center;
-font-size: 100px;
-color: red;
+font-size: 40px;
+color: yellow;
 font-family: serif;
 display: flex;
 flex-direction: column;
 position: fixed;
 display: none;
-width: 100%;
-height: 100%;
-top: 0;
-left: 0;
+width: 100px;;
+height: 75px;
+top: 29%;
+left: 42%;
 right: 0;
 bottom: 0;
-background-color: rgba(0,0,0,0.5);
+background-color: rgba(0,0,0,0);
 z-index: 2;
 cursor: pointer;
+.lose {
+  background: black;
+  width: 150px;
+
+}
+}
+
+.die-overlay {
+text-align: center;
+font-size: 40px;
+color: yellow;
+font-family: serif;
+display: flex;
+flex-direction: column;
+position: fixed;
+display: none;
+width: 100px;;
+height: 75px;
+top: 29%;
+left: 42%;
+right: 0;
+bottom: 0;
+background-color: rgba(0,0,0,0);
+z-index: 2;
+cursor: pointer;
+.die {
+  background: black;
+  width: 150px;
+
+}
 }
 
 .win-overlay {

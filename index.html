@@ -5,6 +5,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/animate.css">
     <script type="text/javascript" src="./scripts/main.js"></script>
     <title>Pac</title>
   </head>
@@ -12,14 +13,18 @@
     <header>
     </header>
     <main>
-      <div class="game-container"></div>
-      <div class="lose-overlay">
-        <p>you lose</p>
+      <div class="game-container">
+        <div class="lose-overlay">
+          <p>you lose</p>
+        </div>
+        <div class="die-overlay">
+          <p class="die animated pulse infinite">you died</p>
+        </div>
+        <div class="win-overlay">
+          <p>you win</p>
+        </div>
       </div>
-      <div class="win-overlay">
-        <p>you win</p>
-      </div>
-    </main>
+      </main>
     <footer>
       <div class="score">score</div>
       <div class="lives">lives 3</div>
