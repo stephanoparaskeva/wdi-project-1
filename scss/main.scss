@@ -4,11 +4,24 @@
 
 body {
   background-image: url('../images/background.jpg');
-  background-size: 'contain';
+  background-repeat: no-repeat;
   background-position: center;
   // background: purple;
   header {
     height: 100px;
+    display: flex;
+    justify-content: space-around;
+    div {
+      font-size: 20px;
+      color: white;
+      &.score {
+        margin-left: 30px;
+        }
+      &.lives {
+        margin-right: 20px;
+      }
+      }
+    }
   }
   main {
     display: flex;
@@ -38,20 +51,13 @@ body {
     }
   }
   footer {
-    display: flex;
-    justify-content: space-around;
-    font-size: 40px;
-    color: white;
     height: 50px;
-    .score {
-    }
-  }
 }
 
 .lose-overlay {
 text-align: center;
 font-size: 40px;
-color: yellow;
+color: purple;
 font-family: serif;
 display: flex;
 flex-direction: column;
@@ -76,7 +82,7 @@ cursor: pointer;
 .die-overlay {
 text-align: center;
 font-size: 40px;
-color: yellow;
+color: purple;
 font-family: serif;
 display: flex;
 flex-direction: column;
