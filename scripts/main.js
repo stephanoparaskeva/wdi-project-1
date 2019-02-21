@@ -73,7 +73,6 @@ window.addEventListener('DOMContentLoaded', () => {
   let ghostMovementInterval
   let loseBlocker = 1
   let gameReset = 0
-
   htmlHighscore.innerHTML = `HIGHSCORE<br>${highscore}`
 
   //event listeners
