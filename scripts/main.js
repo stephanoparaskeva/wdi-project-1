@@ -74,6 +74,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let loseBlocker = 1
   let gameReset = 0
 
+  htmlHighscore.innerHTML = `HIGHSCORE<br>${highscore}`
+
   //event listeners
   htmlPlayOverlay.addEventListener('click', () => {
     gameContainer.style.display = 'block'
@@ -199,18 +201,18 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
       if (score > highscore) {
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       } else{
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       }
     } else if (axis[pacManObj.positionY][pacManObj.positionX] === 9) {
       score += 50
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
       if (score > highscore) {
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       } else{
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       }
     }
   }
@@ -252,9 +254,9 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlScore.classList.add('infinite')
       clearInterval(ghostMovementInterval)
       if (score > highscore) {
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       } else{
-        localStorage.setItem('highscore', score * 10)
+        localStorage.setItem('highscore', score)
       }
     }
   }
