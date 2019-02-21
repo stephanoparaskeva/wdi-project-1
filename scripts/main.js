@@ -7,8 +7,8 @@ window.addEventListener('DOMContentLoaded', () => {
     [1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1],
     [1,1,9,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,9,1,1],
     [1,1,2,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,2,1,1],
-    [1,1,2,1,1,1,2,1,1,1,2,2,2,1,1,2,2,2,1,1,1,2,1,1,1,2,1,1],
-    [1,1,2,1,1,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,2,2,1,1,2,1,1],
+    [1,1,2,1,1,1,2,1,1,1,1,2,2,1,1,2,2,1,1,1,1,2,1,1,1,2,1,1],
+    [1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,1],
     [1,1,2,2,2,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,2,2,2,1,1],
     [1,1,2,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,2,1,1],
     [1,1,2,1,1,2,1,1,2,2,2,2,1,1,1,1,2,2,2,2,1,1,2,1,1,2,1,1],
@@ -64,6 +64,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //variables
   let highscore = localStorage.getItem('highscore')
+  let highscore2 = localStorage.getItem('highscore2')
+  let highscore3 = localStorage.getItem('highscore3')
   let lives = 3
   let imagePositionY = 0
   let score = 0
@@ -73,7 +75,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let ghostMovementInterval
   let loseBlocker = 1
   let gameReset = 0
-  htmlHighscore.innerHTML = `HIGHSCORE<br>${highscore}`
+  htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
 
   //event listeners
   htmlPlayOverlay.addEventListener('click', () => {
@@ -175,10 +177,26 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   //functions
-  const scoreRunner = () => {
 
-    htmlHighscore.innerHTML = `HIGHSCORE<br>${highscore}`
+  const highscores = () => {
+    if (score > highscore3 && score < highscore2 && score < highscore) {
+      localStorage.setItem('highscore3', score)
+    }
+    if (score > highscore2 && score < highscore) {
+      localStorage.setItem('highscore3', highscore2)
+      localStorage.setItem('highscore2', score)
+    }
+    if (score > highscore) {
+      localStorage.setItem('highscore3', highscore2)
+      localStorage.setItem('highscore2', highscore)
+      localStorage.setItem('highscore', score)
+    }
+  }
+
+console.log(highscore)
+  const scoreRunner = () => {
     if (score >= 3500) {
+      highscores()
       gameReset = 1
       gameContainer.style.display = 'none'
       htmlPlayOverlay.style.display = 'block'
@@ -199,20 +217,10 @@ window.addEventListener('DOMContentLoaded', () => {
       score += 10
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
-      if (score > highscore) {
-        localStorage.setItem('highscore', score)
-      } else{
-        localStorage.setItem('highscore', score)
-      }
     } else if (axis[pacManObj.positionY][pacManObj.positionX] === 9) {
       score += 50
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
-      if (score > highscore) {
-        localStorage.setItem('highscore', score)
-      } else{
-        localStorage.setItem('highscore', score)
-      }
     }
   }
 
@@ -239,6 +247,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 3000)
     }
     if (lives === 0) {
+      highscores()
       gameReset = 1
       htmlPlay.innerHTML = 'You Lost'
       htmlReplay.innerHTML = 'click to play again'
@@ -252,11 +261,6 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlScore.classList.add('flash')
       htmlScore.classList.add('infinite')
       clearInterval(ghostMovementInterval)
-      if (score > highscore) {
-        localStorage.setItem('highscore', score)
-      } else{
-        localStorage.setItem('highscore', score)
-      }
     }
   }
 
@@ -380,6 +384,8 @@ window.addEventListener('DOMContentLoaded', () => {
           eatGhost()
           pacManObj.setBackground('#89F8F8')
           scoreRunner()
+          highscores()
+          htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
           loseConditionKeyCall()
         }
         break
@@ -391,6 +397,8 @@ window.addEventListener('DOMContentLoaded', () => {
           eatGhost()
           pacManObj.setBackground('#89F8F8')
           scoreRunner()
+          highscores()
+          htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
           loseConditionKeyCall()
         }
         break
@@ -402,6 +410,8 @@ window.addEventListener('DOMContentLoaded', () => {
           eatGhost()
           pacManObj.setBackground('#89F8F8')
           scoreRunner()
+          highscores()
+          htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
           loseConditionKeyCall()
         }
         break
@@ -413,6 +423,8 @@ window.addEventListener('DOMContentLoaded', () => {
           eatGhost()
           pacManObj.setBackground('#89F8F8')
           scoreRunner()
+          highscores()
+          htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
           loseConditionKeyCall()
         }
         break
