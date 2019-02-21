@@ -15,16 +15,16 @@ window.addEventListener('DOMContentLoaded', () => {
     [1,1,2,2,2,2,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,2,2,2,2,1,1],
     [1,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,1,1,2,2,1,1,1,1,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,1,1,5,5,1,1,1,1,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,5,6,6,6,6,5,1,1,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,5,6,6,6,6,5,1,1,2,1,1,2,1,1,1,1,1],
+    [5,5,5,5,1,2,1,1,2,1,1,1,1,2,2,1,1,1,1,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,1,1,1,1,5,5,1,1,1,1,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,1,1,5,6,6,6,6,5,1,1,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,1,1,5,6,6,6,6,5,1,1,2,1,1,2,1,5,5,5,5],
     [1,1,1,1,1,2,1,1,2,1,1,5,5,5,5,5,5,1,1,2,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,2,2,2,1,1,5,5,5,5,5,5,1,1,2,2,2,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,1,1,1,1],
-    [1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1],
+    [5,5,5,5,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,1,5,5,5,5],
+    [5,5,5,5,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,5,5,5,5],
     [1,1,1,1,1,2,1,1,2,2,1,1,1,1,1,1,1,1,2,2,1,1,2,1,1,1,1,1],
     [1,1,1,1,1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,2,1,1,1,1,1],
     [1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,1,1],
@@ -56,11 +56,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlY = document.querySelectorAll('.Y')
   const htmlScore = document.querySelector('.score')
   const htmlLives = document.querySelector('.lives')
-  const htmlLoseOverlay = document.querySelector('.lose-overlay')
-  const htmlWinOverlay = document.querySelector('.win-overlay')
   const htmlDieOverlay = document.querySelector('.die-overlay')
+  const htmlPlayOverlay = document.querySelector('.play-overlay')
+  const htmlReplay = document.querySelector('.replay')
+  const htmlPlay = document.querySelector('.play')
+  const htmlHighscore = document.querySelector('.highscores')
 
   //variables
+  let highscore = localStorage.getItem('highscore')
   let lives = 3
   let imagePositionY = 0
   let score = 0
@@ -68,7 +71,20 @@ window.addEventListener('DOMContentLoaded', () => {
   let timerCount = 0
   let modifier = 1
   let ghostMovementInterval
-  let loseBlocker = 0
+  let loseBlocker = 1
+  let gameReset = 0
+
+  //event listeners
+  htmlPlayOverlay.addEventListener('click', () => {
+    gameContainer.style.display = 'block'
+    htmlPlayOverlay.style.display = 'none'
+    loseBlocker = 0
+    if (gameReset === 0) {
+      setTimeout(ghostMovementLogic, 200)
+    } else {
+      location.reload()
+    }
+  })
 
   //classes
   class Pacman {
@@ -154,14 +170,27 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     imagePositionY++
+    htmlY[27].children[14].style.background = 'cyan'
   })
 
   //functions
   const scoreRunner = () => {
+
+    htmlHighscore.innerHTML = `HIGHSCORE<br>${highscore}`
     if (score >= 3500) {
-      clearInterval(ghostMovementInterval)
+      gameReset = 1
+      gameContainer.style.display = 'none'
+      htmlPlayOverlay.style.display = 'block'
       loseBlocker = 1
-      htmlWinOverlay.style.display = 'block'
+      htmlPlay.innerHTML = 'You Won'
+      htmlReplay.innerHTML = 'click to play again'
+      htmlScore.classList.add('animated')
+      htmlScore.classList.add('flash')
+      htmlScore.classList.add('infinite')
+      htmlLives.classList.add('animated')
+      htmlLives.classList.add('flash')
+      htmlLives.classList.add('infinite')
+      clearInterval(ghostMovementInterval)
       for (let l = 0; l < ghostArray.length; l++) {
         htmlY[ghostArray[l].positionY].children[ghostArray[l].positionX].style.background = 'black'
       }
@@ -169,10 +198,20 @@ window.addEventListener('DOMContentLoaded', () => {
       score += 10
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
+      if (score > highscore) {
+        localStorage.setItem('highscore', score * 10)
+      } else{
+        localStorage.setItem('highscore', score * 10)
+      }
     } else if (axis[pacManObj.positionY][pacManObj.positionX] === 9) {
       score += 50
       htmlScore.innerHTML = `score ${score}`
       axis[pacManObj.positionY][pacManObj.positionX] = 0
+      if (score > highscore) {
+        localStorage.setItem('highscore', score * 10)
+      } else{
+        localStorage.setItem('highscore', score * 10)
+      }
     }
   }
 
@@ -185,22 +224,38 @@ window.addEventListener('DOMContentLoaded', () => {
       htmlLives.innerHTML = `lives ${lives}`
       pacManObj.positionX = 14
       pacManObj.positionY = 27
+      htmlY[27].children[14].style.background = 'cyan'
       htmlDieOverlay.style.display = 'block'
       for (let t = 0; t < ghostArray.length; t++) {
         htmlY[ghostArray[t].positionY].children[ghostArray[t].positionX].style.background = 'black'
         ghostArray[t].positionX = 13
         ghostArray[t].positionY = 14
-      }
-      setTimeout(function() {
-        ghostMovementLogic()
-        htmlDieOverlay.style.display = 'none'
-        loseBlocker = 0
-      }, 3000)
+      } if (lives !== 0)
+        setTimeout(function() {
+          ghostMovementLogic()
+          htmlDieOverlay.style.display = 'none'
+          loseBlocker = 0
+        }, 3000)
     }
     if (lives === 0) {
-      htmlLoseOverlay.style.display = 'block'
-      clearInterval(ghostMovementInterval)
+      gameReset = 1
+      htmlPlay.innerHTML = 'You Lost'
+      htmlReplay.innerHTML = 'click to play again'
+      htmlPlayOverlay.style.display = 'block'
+      gameContainer.style.display = 'none'
       htmlDieOverlay.style.display = 'none'
+      htmlLives.classList.add('animated')
+      htmlLives.classList.add('flash')
+      htmlLives.classList.add('infinite')
+      htmlScore.classList.add('animated')
+      htmlScore.classList.add('flash')
+      htmlScore.classList.add('infinite')
+      clearInterval(ghostMovementInterval)
+      if (score > highscore) {
+        localStorage.setItem('highscore', score * 10)
+      } else{
+        localStorage.setItem('highscore', score * 10)
+      }
     }
   }
 
@@ -215,9 +270,9 @@ window.addEventListener('DOMContentLoaded', () => {
         modifier = - 1
         timerCount++
         if (timerCount === 40) {
-          clearInterval(tenSecondTimer)
           modifier = 1
           timerCount = 0
+          clearInterval(tenSecondTimer)
         }
       }, 250)
     }
@@ -463,7 +518,4 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }, 100)
   }
-
-  ghostMovementLogic()
-
 }) // close for DOMContentLoaded

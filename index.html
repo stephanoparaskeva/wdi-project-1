@@ -4,26 +4,27 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="shortcut icon" href="./images/favicon.ico">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/animate.css">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <script type="text/javascript" src="./scripts/main.js"></script>
     <title>Pac</title>
   </head>
   <body>
     <header>
-      <div class="score">score</div>
+      <div class="score">score 0</div>
       <div class="lives">lives 3</div>
     </header>
     <main>
+      <div class="play-overlay">
+        <p class="play animated pulse infinite">click to play</p>
+        <p class="replay"></p>
+        <p class="highscores">HIGHSCORES</p>
+      </div>
       <div class="game-container">
-        <div class="lose-overlay">
-          <p>you lose</p>
-        </div>
         <div class="die-overlay">
-          <p class="die animated pulse infinite">you died</p>
-        </div>
-        <div class="win-overlay">
-          <p>you win</p>
+          <p class="die animated pulse infinite">you<br>died</p>
         </div>
       </div>
       </main>
