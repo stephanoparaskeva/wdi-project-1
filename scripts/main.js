@@ -62,10 +62,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlPlay = document.querySelector('.play')
   const htmlHighscore = document.querySelector('.highscores')
 
+  //audio
+  const audioTheme  = document.querySelector('.theme')
+  audioTheme.src  = './audio/paris2.mp3'
+
   //variables
   let highscore = localStorage.getItem('highscore')
   let highscore2 = localStorage.getItem('highscore2')
   let highscore3 = localStorage.getItem('highscore3')
+  let musicOn = 1
   let lives = 3
   let imagePositionY = 0
   let score = 0
@@ -75,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let ghostMovementInterval
   let loseBlocker = 1
   let gameReset = 0
+
   htmlHighscore.innerHTML = `HIGHSCORE<br>1) ${highscore}<br>2) ${highscore2}<br>3) ${highscore3}`
 
   //event listeners
@@ -82,6 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
     gameContainer.style.display = 'block'
     htmlPlayOverlay.style.display = 'none'
     loseBlocker = 0
+    playMusic()
     if (gameReset === 0) {
       setTimeout(ghostMovementLogic, 200)
     } else {
@@ -177,6 +184,13 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   //functions
+  function playMusic() {
+    if (!musicOn) {
+      return
+    }
+    audioTheme.loop = true
+    audioTheme.play()
+  }
 
   const highscores = () => {
     if (score > highscore3 && score < highscore2 && score < highscore) {
@@ -531,4 +545,5 @@ console.log(highscore)
       }
     }, 100)
   }
+
 }) // close for DOMContentLoaded
