@@ -2,7 +2,7 @@
 ## PacMan
 [Deployed project](https://www.stephanoparaskeva.com/wdi-project-1-pacman/)
 
-![](https://media.giphy.com/media/eLvoktbIASIGO0Rjph/giphy.gif)
+![](/images/pacman.gif)
 ___
 ### Overview:
 A recreation of the classic game, where the user can increase their score by moving over points and avoiding ghosts. The ghosts have full follow logic and will track PacMan down or run away after PacMan eats a powerup.
