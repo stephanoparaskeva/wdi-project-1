@@ -235,6 +235,7 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
  ![](/images/secondStageGif.gif)
 
 3. I then decided to rewrite and try again where the characters were 1 block in size. I added the Ghost class and tested random movement for the ghosts, but at this stage the ghosts would be stuck in one part of the map. This was because they didn't have the required logic to help them out.
+ 
  ![](/images/thirdStageGif.gif)
 
 ### Bugs:
@@ -245,6 +246,7 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
 **Problem**: The start screen displaying highscores will display 'null' if no highscores have yet been recorded.
 
 **Solution**: The inner HTML can be changed to '0' if the value of the highscore is falsey.
+
 ---
 
 **Problem**: PacMan can avoid the ghosts by moving into their spawn location. This doesn't mean that the player can cheat as it adds no benefit because the player cant win if they remain here. It is however not intended that the player can do this.
