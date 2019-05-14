@@ -257,14 +257,21 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
 
 ### Wins and Blockers:
 
-The biggest blocker for me was the 
+The biggest blocker for me was the movement of the ghosts. Before I used a classes, I attempted to code movement for each ghost seperately. This made it hard to keep track of all the different moving parts. I began to lose track of the different variables for each ghost. I then began to think of the ghosts as objects and knew that all ghosts had a general blueprint that was the Ghost class. Doing this made it far easier to work with the multiple ghosts as all are really just different iterations of the same thing. However the problems didnt end there as the ghosts would still sometimes clip through the walls. I further debugged and managed to fix the issue.
 
-A win for the app was the 
+A win for the app was the giant map. I decided early on to use a 2D array rather than focusing on making the game more HTML based with changing classes. This meant that the game was very contained and managable, it gave me more control. Building the game like this, and with classes made the code more scalable as if in the future I wanted to add more ghosts or a larger map, both would be possible to add with minimum effort.
 
 ### Future Features:
 
 *Features we would like to add, include:*
 
-* 
+* Prompts for the user to see what the controls are.
+
+* An extended map, possibly multiple levels.
+
+* Online leaderboards.
+
+* More responsive styling.
 
 ### Key Learnings:
+This project helped me in learning to code a project from the ground up by starting from little more than an idea on how to make the project work. Breaking the game into multiple smaller parts and problems and then taking these step-by-step, thinking about how to solve them. I enjoyed seeing my work come together. The project was a wealth of small problems to overcome and learn from. 
