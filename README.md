@@ -1,4 +1,4 @@
-# General Assembly WDI Project 1: Game
+# General Assembly WDI Project 1: Solo Game Project
 ## PacMan
 [Deployed project](https://www.stephanoparaskeva.com/wdi-project-1-pacman/)
 
@@ -8,8 +8,8 @@ ___
 A recreation of the classic game, where the user can increase their score by moving over points and avoiding ghosts. The ghosts have full follow logic and will track PacMan down or run away after PacMan eats a powerup.
 ___
 
-### Timeframe:
-    7 days
+### Timeframe & Team:
+    7 days, solo
 
 ### The Brief:
 
@@ -137,7 +137,7 @@ switch(e.keyCode) {
           loseConditionKeyCall()
         }
 ```
-5. PacMan and the ghosts movement are based on iterating through the 2D array axes and display this visually by painting the previous position black (meaning that the character is no longer there) and painting the next position the color of the character. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on the class of Ghost or of Pacman. 
+5. PacMan and the ghosts' movement are based on iterating through the 2D array axes and display this visually by painting the previous position black (meaning that the character is no longer there) and painting the next position the color of that character, additionally, PacMan also has an integer where the 2D array is also changed to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on the class of Ghost or of Pacman. 
 ```javascript
 moveDirection(x, y) {
       if (axis[this.positionY + y][this.positionX + x] === 1) {
@@ -189,7 +189,7 @@ moveDirection(x, y) {
           trackingYSameMoveRight(k, movementCheckRight, modifier)
         } 
 ```
-This is only part of the code used to achieve the ghost movement. This basically states that as long as the position that is to be moved to is not a wall, is not the position that the ghost was in 2 moves ago and applies a randomizer. It does this for each ghost in the array of 4 ghosts.
+  This is only part of the code used to achieve the ghost movement. This basically states that as long as the position that is to be   moved to is not a wall, is not the position that the ghost was in 2 moves ago and applies a randomizer. It does this for each ghost in the array of 4 ghosts.
 
 8. After movement, I needed to implement tracking. Where the ghosts actively seek PacMan but also actively flee from PacMan once PacMan consumes a powerup. To do this, I gave the ghosts the ability to 'see' along the axis of the map. Like corridors, if a ghost is in an open section of the map, a function will run where the entire row or column is iterated through. If PacMan's coordinates are in the same axis then the ghost will move double pace towards PacMan. This is done with 4 functions which again can be refactored given enough time, to be far more efficient.
 ```javascript
@@ -206,3 +206,16 @@ const trackingYSameMoveLeft = (k, movementCheckLeft, chaseRun) => {
     }
   }
 ```
+9. Next was the scoring element of the game. To develop this, I made it so that whenever PacMan moves, a 'scoreRunner' funtion is run so that if PacMan travels over a position with a point (2 on the map) the score goes up, and the position changes to a 0, so that PacMan can no longer gain points from that position.
+ ![](/images/score.gif)
+10. Lastly, there must be win and loss conditions for PacMan. To win, PacMan must reach 3500 points. Once this is met, the while loop for the game ends and the score is displayed. The loss condition is met when PacMan travels over the same block as the ghosts 3 times (gets eaten).
+```javascript
+const loseCondition = (k) => {
+    if (ghostArray[k].positionX === pacManObj.positionX &&
+      ghostArray[k].positionY === pacManObj.positionY && modifier === 1) {
+      clearInterval(ghostMovementInterval)
+      loseBlocker = 1
+      if (lives > 0) lives -= 1
+```
+
+### Styling
