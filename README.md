@@ -190,7 +190,7 @@ moveDirection(x, y) {
           trackingYSameMoveRight(k, movementCheckRight, modifier)
         } 
 ```
-  This is only part of the code used to achieve the ghost movement. This basically states that as long as the position that is to be   moved to is not a wall, is not the position that the ghost was in 2 moves ago and applies a randomizer. It does this for each ghost in the array of 4 ghosts.
+This is only part of the code used to achieve the ghost movement. This basically states that as long as the position that is to be   moved to is not a wall, is not the position that the ghost was in 2 moves ago and applies a randomizer. It does this for each ghost in the array of 4 ghosts.
 
 8. After movement, I needed to implement tracking. Where the ghosts actively seek PacMan but also actively flee from PacMan once PacMan consumes a powerup. To do this, I gave the ghosts the ability to 'see' along the axis of the map. Like corridors, if a ghost is in an open section of the map, a function will run where the entire row or column is iterated through. If PacMan's coordinates are in the same axis then the ghost will move double pace towards PacMan. This is done with 4 functions which again can be refactored given enough time, to be far more efficient.
 ```javascript
@@ -227,8 +227,42 @@ To style PacMan I used CSS with SASS. I wanted to create an original looking gam
 ### Process:
 As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various stages or development phases and I'd consistently write code and then rewrite once I found a better solution.
 1. First I rendered a the grid to the screen with only borders to test the map and movement.
+ 
  ![](/images/firstStageGif.gif)
+
 2. Next I designed the map with its structure and layout, threw in some colors to further test movement. At this point I had PacMan as 4 blocks in size, this began to prove to add additional work that didnt seem necessary. It meant that all collision calculations had to be calculated 4 times more.
+ 
  ![](/images/secondStageGif.gif)
+
 3. I then decided to rewrite and try again where the characters were 1 block in size. I added the Ghost class and tested random movement for the ghosts, but at this stage the ghosts would be stuck in one part of the map. This was because they didn't have the required logic to help them out.
  ![](/images/thirdStageGif.gif)
+
+### Bugs:
+*Below is a list of some of the known issues*:
+
+---
+
+**Problem**: The start screen displaying highscores will display 'null' if no highscores have yet been recorded.
+
+**Solution**: The inner HTML can be changed to '0' if the value of the highscore is falsey.
+---
+
+**Problem**: PacMan can avoid the ghosts by moving into their spawn location. This doesn't mean that the player can cheat as it adds no benefit because the player cant win if they remain here. It is however not intended that the player can do this.
+
+**Solution**: Treat the spaces inside the spawn location as a *special* wall in that they are not a wall (so will not be 1's on the map) as the ghosts must travel through them, but they can be given an integer value on the map that PacMan cannot travel through.
+
+---
+
+### Wins and Blockers:
+
+The biggest blocker for me was the 
+
+A win for the app was the 
+
+### Future Features:
+
+*Features we would like to add, include:*
+
+* 
+
+### Key Learnings:
