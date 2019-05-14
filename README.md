@@ -32,10 +32,11 @@ ___
 
 * HTML5
 * CSS3
+* Vanilla JavaScript (ECMAScript6)
+* jQuery
 * Animate.css
 * SCSS
 * Flexbox
-* Vanilla JavaScript (ECMAScript6)
 * Git
 * GitHub
 
@@ -207,7 +208,9 @@ const trackingYSameMoveLeft = (k, movementCheckLeft, chaseRun) => {
   }
 ```
 9. Next was the scoring element of the game. To develop this, I made it so that whenever PacMan moves, a 'scoreRunner' funtion is run so that if PacMan travels over a position with a point (2 on the map) the score goes up, and the position changes to a 0, so that PacMan can no longer gain points from that position.
+ 
  ![](/images/score.gif)
+
 10. Lastly, there must be win and loss conditions for PacMan. To win, PacMan must reach 3500 points. Once this is met, the while loop for the game ends and the score is displayed. The loss condition is met when PacMan travels over the same block as the ghosts 3 times (gets eaten).
 ```javascript
 const loseCondition = (k) => {
@@ -218,4 +221,14 @@ const loseCondition = (k) => {
       if (lives > 0) lives -= 1
 ```
 
-### Styling
+### Styling:
+To style PacMan I used CSS with SASS. I wanted to create an original looking game that felt different to the original PacMan and thus I chose to go with a 'Tron' like theme, with bright neon colors and an artistic background. I made the map semi-transparent so that the game blended with the background and added box-shadows that mirrored the background in order to further blend the game. One of the most challenging pieces to style was the map itself, as I had to use Flexbox to ensure that the 28x36 grid was actually displayed on the screen with the right orientation and that squares didnt wrap to the other side. Each square had to be in the right place for the game to work.
+
+### Process:
+As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various stages or development phases and I'd consistently write code and then rewrite once I found a better solution.
+1. First I rendered a the grid to the screen with only borders to test the map and movement.
+ ![](https://media.giphy.com/media/kHCg58RakPFlxxMeBe/giphy.gif)
+2. Next I designed the map with its structure and layout, threw in some colors to further test movement. At this point I had PacMan as 4 blocks in size, this began to prove to add additional work that didnt seem necessary. It meant that all collision calculations had to be calculated 4 times more.
+ ![](https://media.giphy.com/media/PjyJQXfa5MCCuFosRw/giphy.gif)
+3. I then decided to rewrite and try again where the characters were 1 block in size. I added the Ghost class and tested random movement for the ghosts, but at this stage the ghosts would be stuck in one part of the map. This was because they didn't have the required logic to help them out.
+ ![](https://media.giphy.com/media/Qxx02zXzA5jG3QhWYQ/giphy.gif)
