@@ -227,8 +227,8 @@ To style PacMan I used CSS with SASS. I wanted to create an original looking gam
 ### Process:
 As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various stages or development phases and I'd consistently write code and then rewrite once I found a better solution.
 1. First I rendered a the grid to the screen with only borders to test the map and movement.
- ![](https://media.giphy.com/media/kHCg58RakPFlxxMeBe/giphy.gif)
+ ![](/images/firstStageGif.gif)
 2. Next I designed the map with its structure and layout, threw in some colors to further test movement. At this point I had PacMan as 4 blocks in size, this began to prove to add additional work that didnt seem necessary. It meant that all collision calculations had to be calculated 4 times more.
- ![](https://media.giphy.com/media/PjyJQXfa5MCCuFosRw/giphy.gif)
+ ![](/images/secondStageGif.gif)
 3. I then decided to rewrite and try again where the characters were 1 block in size. I added the Ghost class and tested random movement for the ghosts, but at this stage the ghosts would be stuck in one part of the map. This was because they didn't have the required logic to help them out.
- ![](https://media.giphy.com/media/Qxx02zXzA5jG3QhWYQ/giphy.gif)
+ ![](/images/thirdStageGif.gif)
