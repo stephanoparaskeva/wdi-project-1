@@ -63,8 +63,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const htmlHighscore = document.querySelector('.highscores')
 
   //audio
-  const audioTheme  = document.querySelector('.theme')
-  audioTheme.src  = './audio/paris2.mp3'
+  // const audioTheme  = document.querySelector('.theme')
+  // audioTheme.src  = './audio/paris2.mp3'
 
   //variables
   let highscore = localStorage.getItem('highscore')
