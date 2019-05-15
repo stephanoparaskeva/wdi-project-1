@@ -22,10 +22,10 @@ ___
 * The player's score should be displayed at the end of the game.
 * Responsive design.
 * Each board gets more difficult.
-* Persistent leaderboard using `localStorage`
+* Persistent leaderboard using `localStorage`.
 
 **Additional**
-* Create ghost logic where ghosts move randomly, and chase PacMan
+* Add ghost follow logic where ghosts chase PacMan.
 
 
 ### Technologies:
@@ -42,11 +42,11 @@ ___
 
 
 ### Approach:
-I decided to work on this project with a focus on the map, as PacMan once broken down is essentially a map with 5 moving objects. Thus I decided to create a 2D array and have all properties of the game based on different integers in the 2D array. I wanted to create a very organic feel to the game were the map felt like a network with the moving objects having realistic movements.   
+I decided to work on this project with a focus on the game *map*. When I broke PacMan down, I found that it is essentially one big map with 5 moving objects. Thus I decided to create a 2D array and have all properties of the game based on different integers in the 2D array. I wanted to create a very organic feel to the game were the map felt like a network with the moving objects having realistic movement.   
 
 
 ### Code Walkthrough:
-1. I began by manually constructing a 2D array with different integers representing different things. The map itself is a 28x36 array of integers, where '1' represents a wall and '2' represents an empty space with a point. 
+1. I began manually constructing the map as a 2D array with different integers representing different things. The map itself is a 28x36 array of integers where `1` represents a wall and `2` represents an empty space with a point. 
 ```javascript
 const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -87,7 +87,7 @@ const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
   ]
 ```
-2. I then used JavaScript to create HTML elements for each position of the map. I did this by creating 28 row containers and inserting 36 divs inside of these.
+2. I then used JavaScript to create HTML elements for each position of the map. I did this by creating 28 divs as rows and inserting 36 divs for columns inside of these.
 ```javascript
 const gameContainer = document.querySelector('.game-container')
   for (let i = 0; i < 36; i++) {
@@ -101,7 +101,7 @@ const gameContainer = document.querySelector('.game-container')
     }
   }
 ```
-3. Next the map is drawn to the screen via iterating through both axes of the 2D and coloring the div backgrounds based on the value of the integer. I decided to make the walls transparent and give the points a black background with a yellow dot in the center (representing a point).
+3. Next the map is drawn to the screen via iterating through both axes of the 2D array and colouring the div backgrounds based on the value of the integer. I decided to make the walls transparent and give the points a black background with a yellow dot in the center (representing a point).
 ```javascript
 htmlY.forEach(function(item) {
     for(let f = 0; f < axis[0].length; f++) {
@@ -122,7 +122,7 @@ htmlY.forEach(function(item) {
     htmlY[27].children[14].style.background = 'cyan'
   })
 ```
-4. I then began to focus on movement. Where I used the key presses of the directional arrows to increment PacMan's X and Y positions. As I made PacMan into an object, it meant that I changed the X and Y variable values on the PacMan object based on keypresses.
+4. I then began to focus on movement. Where I used the key presses of the directional arrows to increment PacMan's X and Y position. As I made PacMan into an object, it meant that the X and Y variable values on the PacMan object change based on keypresses.
 ```javascript
 switch(e.keyCode) {
       case 37: //left
@@ -138,7 +138,7 @@ switch(e.keyCode) {
           loseConditionKeyCall()
         }
 ```
-5. PacMan and the ghosts' movement are based on iterating through the 2D array axes and display this visually by painting the previous position black (meaning that the character is no longer there) and painting the next position the color of that character, additionally, PacMan also has an integer where the 2D array is also changed to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on the class of Ghost or of Pacman. 
+5. PacMan and the ghosts' movement are based on iterating through the axes of the 2D array. This is displayed visually by painting the div at the coordinates of the previous position of the character (ghost or PacMan) black and painting the next position the color of that character, additionally, PacMan also has an integer value associated to it, where the 2D array is changed to this value to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on their respective classes called `moveDirection`. 
 ```javascript
 moveDirection(x, y) {
       if (axis[this.positionY + y][this.positionX + x] === 1) {
@@ -163,7 +163,7 @@ moveDirection(x, y) {
     }
    }
 ```
-7. Once the ghosts where created, I needed to give them movement. Thus I decided to first randomize their movement. This was harder than it seemed as the ghost must pick a random move path at every junction in the map for its movement to seem truly random. Thus I used multiple cascading if-else blocks. Although these are long-winded, I believe that given more time I could refactor them to be very much shorter and more concise.
+7. Once the ghosts where created, I needed to give them movement by randomizing their next position. This was harder than it seemed as the ghosts would often move back and forth, retracing their steps. So I instead used multiple if-else blocks as well as random move choices. Using these together to make the ghosts move along one path and only change direction at a junction. Although this if-else chain is long-winded, given more time I would have refactored them to be very much shorter and more concise.
 ```javascript
   const ghostMovementLogic = () => {
     ghostMovementInterval = setInterval(function() {
@@ -190,9 +190,9 @@ moveDirection(x, y) {
           trackingYSameMoveRight(k, movementCheckRight, modifier)
         } 
 ```
-  This is only part of the code used to achieve the ghost movement. This basically states that as long as the position that is to be   moved to is not a wall, is not the position that the ghost was in 2 moves ago and applies a randomizer. It does this for each ghost in the array of 4 ghosts.
+This is only part of the code used to achieve the ghost movement. This states that as long as the next position is not a wall and is not a previous position from 2 moves ago the ghost will move to that position, while applying a randomizer where there are multiple positions to choose from. It does this for each ghost in the array of 4 ghosts.
 
-8. After movement, I needed to implement tracking. Where the ghosts actively seek PacMan but also actively flee from PacMan once PacMan consumes a powerup. To do this, I gave the ghosts the ability to 'see' along the axis of the map. Like corridors, if a ghost is in an open section of the map, a function will run where the entire row or column is iterated through. If PacMan's coordinates are in the same axis then the ghost will move double pace towards PacMan. This is done with 4 functions which again can be refactored given enough time, to be far more efficient.
+8. After movement, I needed to implement tracking. Where the ghosts actively seek out PacMan, and actively flee from PacMan once PacMan consumes a powerup. To do this, I gave the ghosts the ability to 'see' along their axis of the map, like corridors. If a ghost is in an open section of the map, a function will run where the entire row or column is iterated through. If PacMan's coordinates are in the same axis then the ghost will move double pace towards PacMan. This is done with 4 functions for the 4 move directions which again can be refactored given enough time, to be far more efficient.
 ```javascript
 const trackingYSameMoveLeft = (k, movementCheckLeft, chaseRun) => {
     if (ghostArray[k].positionY === pacManObj.positionY) {
@@ -207,7 +207,7 @@ const trackingYSameMoveLeft = (k, movementCheckLeft, chaseRun) => {
     }
   }
 ```
-9. Next was the scoring element of the game. To develop this, I made it so that whenever PacMan moves, a 'scoreRunner' funtion is run so that if PacMan travels over a position with a point (2 on the map) the score goes up, and the position changes to a 0, so that PacMan can no longer gain points from that position.
+9. Then came the scoring element of the game. To develop this, I made it so that whenever PacMan moves a `scoreRunner` funtion is run to check whether PacMan travels over a position with an available point (a 2 on the map) the score goes up, and the integer in the map changes to a 0, so that PacMan can no longer gain points from that position.
  
  ![](/images/score.gif)
 
@@ -222,13 +222,56 @@ const loseCondition = (k) => {
 ```
 
 ### Styling:
-To style PacMan I used CSS with SASS. I wanted to create an original looking game that felt different to the original PacMan and thus I chose to go with a 'Tron' like theme, with bright neon colors and an artistic background. I made the map semi-transparent so that the game blended with the background and added box-shadows that mirrored the background in order to further blend the game. One of the most challenging pieces to style was the map itself, as I had to use Flexbox to ensure that the 28x36 grid was actually displayed on the screen with the right orientation and that squares didnt wrap to the other side. Each square had to be in the right place for the game to work.
+To style the game I used CSS with SASS. I wanted to create a game that looked slightly different to the original PacMan and thus I chose to go with a 'Tron' like theme, with bright neon colors and an artistic background. I made the map semi-transparent so that the game blended with the background and added box-shadows that mirrored the background. One of the most challenging pieces to style was the map itself, as I had to use Flexbox to ensure that the 28x36 grid was displayed on the screen with the right orientation and that it didnt have divs that wrap to the other side. Each div had to be in the right place for the game to work.
 
 ### Process:
-As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various stages or development phases and I'd consistently write code and then rewrite once I found a better solution.
+As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various development phases and I'd consistently write code and then rewrite once I found a better solution.
 1. First I rendered a the grid to the screen with only borders to test the map and movement.
- ![](https://media.giphy.com/media/kHCg58RakPFlxxMeBe/giphy.gif)
-2. Next I designed the map with its structure and layout, threw in some colors to further test movement. At this point I had PacMan as 4 blocks in size, this began to prove to add additional work that didnt seem necessary. It meant that all collision calculations had to be calculated 4 times more.
- ![](https://media.giphy.com/media/PjyJQXfa5MCCuFosRw/giphy.gif)
+ 
+ ![](/images/firstStageGif.gif)
+
+2. Next I designed the map with its structure and layout, threw in some colours to further test movement. At this point I had PacMan as 4 blocks in size, this added additional work that didnt seem necessary. It meant that all collision calculations had to be calculated 4 times more.
+ 
+ ![](/images/secondStageGif.gif)
+
 3. I then decided to rewrite and try again where the characters were 1 block in size. I added the Ghost class and tested random movement for the ghosts, but at this stage the ghosts would be stuck in one part of the map. This was because they didn't have the required logic to help them out.
- ![](https://media.giphy.com/media/Qxx02zXzA5jG3QhWYQ/giphy.gif)
+ 
+ ![](/images/thirdStageGif.gif)
+
+### Bugs:
+*Below is a list of some of the known issues*:
+
+---
+
+**Problem**: The start screen displaying highscores will display `null` if no highscores have yet been recorded.
+
+**Solution**: The inner HTML can be changed to `0` if the value of the highscore is falsey.
+
+---
+
+**Problem**: PacMan can avoid the ghosts by moving into their spawn location. This doesn't mean that the player can cheat as it adds no benefit because the player can't win by doing this. This is still another bug however.
+
+**Solution**: This could be fixed by making the spaces inside the spawn location act as a wall to PacMan but not the ghosts.
+
+---
+
+### Wins and Blockers:
+
+The biggest blocker for me was coding the movement of the ghosts. Before I used a classes, I attempted to code movement for each ghost seperately. This made it hard to keep track of all the different moving parts. I began to lose track of the different variables for each ghost. I then began to think of the ghosts as objects and knew that all ghosts had a general blueprint that was the Ghost class. Doing this made it far easier to work with the multiple ghosts as each is really just a different iteration of the same thing. The problems didnt end there however as the ghosts would still sometimes clip through the walls. It took further debugging to manage to fix the issue.
+
+A win for the app was the giant map. I decided early on to use a 2D array rather than focusing on making the game HTML based. This meant that the game was all contained within this one managable map which gave me more control. Moreover, building the game like this and using classes made the code more scalable as if in the future I wanted to add more ghosts or a larger map, both would be possible with minimum effort.
+
+### Future Features:
+
+*Features we would like to add, include:*
+
+* Prompts for the user to see what the controls are.
+
+* An extended map, possibly multiple levels.
+
+* Online leaderboards.
+
+* More responsive styling.
+
+### Key Learnings:
+This project helped me in learning to code a project from the ground up by starting from little more than an idea on how to make the project work. Breaking the game into multiple smaller parts and problems and then taking these step-by-step, thinking about how to solve them. I enjoyed seeing my work come together. The project was a wealth of small problems to overcome and learn from. 
