@@ -22,7 +22,7 @@ ___
 * The player's score should be displayed at the end of the game.
 * Responsive design.
 * Each board gets more difficult.
-* Persistent leaderboard using `localStorage`
+* Persistent leaderboard using `localStorage`.
 
 **Additional**
 * Add ghost follow logic where ghosts chase PacMan.
@@ -46,7 +46,7 @@ I decided to work on this project with a focus on the game *map*. When I broke P
 
 
 ### Code Walkthrough:
-1. I began manually constructing the map as a 2D array with different integers representing different things. The map itself is a 28x36 array of integers where '1' represents a wall and '2' represents an empty space with a point. 
+1. I began manually constructing the map as a 2D array with different integers representing different things. The map itself is a 28x36 array of integers where `1` represents a wall and `1` represents an empty space with a point. 
 ```javascript
 const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -138,7 +138,7 @@ switch(e.keyCode) {
           loseConditionKeyCall()
         }
 ```
-5. PacMan and the ghosts' movement are based on iterating through the axes of the 2D array. This is displayed visually by painting the div at the coordinates of the previous position of the character (ghost or PacMan) black and painting the next position the color of that character, additionally, PacMan also has an integer value associated to it, where the 2D array is changed to this value to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on their respective classes called 'moveDirection'. 
+5. PacMan and the ghosts' movement are based on iterating through the axes of the 2D array. This is displayed visually by painting the div at the coordinates of the previous position of the character (ghost or PacMan) black and painting the next position the color of that character, additionally, PacMan also has an integer value associated to it, where the 2D array is changed to this value to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on their respective classes called `moveDirection`. 
 ```javascript
 moveDirection(x, y) {
       if (axis[this.positionY + y][this.positionX + x] === 1) {
@@ -207,7 +207,7 @@ const trackingYSameMoveLeft = (k, movementCheckLeft, chaseRun) => {
     }
   }
 ```
-9. Then came the scoring element of the game. To develop this, I made it so that whenever PacMan moves a 'scoreRunner' funtion is run to check whether PacMan travels over a position with an available point (a 2 on the map) the score goes up, and the integer in the map changes to a 0, so that PacMan can no longer gain points from that position.
+9. Then came the scoring element of the game. To develop this, I made it so that whenever PacMan moves a `scoreRunner` funtion is run to check whether PacMan travels over a position with an available point (a 2 on the map) the score goes up, and the integer in the map changes to a 0, so that PacMan can no longer gain points from that position.
  
  ![](/images/score.gif)
 
@@ -243,9 +243,9 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
 
 ---
 
-**Problem**: The start screen displaying highscores will display 'null' if no highscores have yet been recorded.
+**Problem**: The start screen displaying highscores will display `null` if no highscores have yet been recorded.
 
-**Solution**: The inner HTML can be changed to '0' if the value of the highscore is falsey.
+**Solution**: The inner HTML can be changed to `0` if the value of the highscore is falsey.
 
 ---
 
