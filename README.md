@@ -46,7 +46,7 @@ I decided to work on this project with a focus on the game *map*. When I broke P
 
 
 ### Code Walkthrough:
-1. I began manually constructing the map as a 2D array with different integers representing different things. The map itself is a 28x36 array of integers where `1` represents a wall and `1` represents an empty space with a point. 
+1. I began manually constructing the map as a 2D array with different integers representing different things. The map itself is a 28x36 array of integers where `1` represents a wall and `2` represents an empty space with a point. 
 ```javascript
 const axis = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
