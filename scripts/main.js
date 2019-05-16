@@ -88,7 +88,6 @@ window.addEventListener('DOMContentLoaded', () => {
     gameContainer.style.display = 'block'
     htmlPlayOverlay.style.display = 'none'
     loseBlocker = 0
-    playMusic()
     if (gameReset === 0) {
       setTimeout(ghostMovementLogic, 200)
     } else {
