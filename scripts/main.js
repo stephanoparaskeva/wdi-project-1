@@ -184,13 +184,13 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   //functions
-  function playMusic() {
-    if (!musicOn) {
-      return
-    }
-    audioTheme.loop = true
-    audioTheme.play()
-  }
+  // function playMusic() {
+  //   if (!musicOn) {
+  //     return
+  //   }
+  //   audioTheme.loop = true
+  //   audioTheme.play()
+  // }
 
   const highscores = () => {
     if (score > highscore3 && score < highscore2 && score < highscore) {
