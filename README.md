@@ -245,7 +245,7 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
 
 **Problem**: The start screen displaying highscores will display `null` if no highscores have yet been recorded.
 
-**Solution**: The inner HTML can be changed to `0` if the value of the highscore is falsey.
+**Solution**: The inner HTML can be changed to `0` if the value of the highscore is falsy.
 
 ---
 
@@ -257,7 +257,7 @@ As this was a solo project I worked using Version-Control via Git on GitHub myse
 
 ### Wins and Blockers:
 
-The biggest blocker for me was coding the movement of the ghosts. Before I used a classes, I attempted to code movement for each ghost seperately. This made it hard to keep track of all the different moving parts. I began to lose track of the different variables for each ghost. I then began to think of the ghosts as objects and knew that all ghosts had a general blueprint that was the Ghost class. Doing this made it far easier to work with the multiple ghosts as each is really just a different iteration of the same thing. The problems didnt end there however as the ghosts would still sometimes clip through the walls. It took further debugging to manage to fix the issue.
+The biggest blocker for me was coding the movement of the ghosts. Before I used classes, I attempted to code movement for each ghost seperately. This made it hard to keep track of all the different moving parts. I began to lose track of the different variables for each ghost. I then began to think of the ghosts as objects and knew that all ghosts had a general blueprint that was the Ghost class. Doing this made it far easier to work with the multiple ghosts as each is really just a different iteration of the same thing. The problems didnt end there however as the ghosts would still sometimes clip through the walls. It took further debugging to manage to fix the issue.
 
 A win for the app was the giant map. I decided early on to use a 2D array rather than focusing on making the game HTML based. This meant that the game was all contained within this one managable map which gave me more control. Moreover, building the game like this and using classes made the code more scalable as if in the future I wanted to add more ghosts or a larger map, both would be possible with minimum effort.
 
