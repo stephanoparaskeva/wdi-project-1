@@ -226,7 +226,7 @@ To style the game I used CSS with SASS. I wanted to create a game that looked sl
 
 ### Process:
 As this was a solo project I worked using Version-Control via Git on GitHub myself. The game itself went through various development phases and I'd consistently write code and then rewrite once I found a better solution.
-1. First I rendered a the grid to the screen with only borders to test the map and movement.
+1. First I rendered the grid to the screen with only borders to test the map and movement.
  
  ![](/images/firstStageGif.gif)
 
