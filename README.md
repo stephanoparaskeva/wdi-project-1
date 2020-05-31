@@ -163,7 +163,7 @@ moveDirection(x, y) {
     }
    }
 ```
-7. Once the ghosts where created, I needed to give them movement by randomizing their next position. This was harder than it seemed as the ghosts would often move back and forth, retracing their steps. So I instead used multiple if-else blocks as well as random move choices. Using these together to make the ghosts move along one path and only change direction at a junction. Although this if-else chain is long-winded, given more time I would have refactored them to be very much shorter and more concise.
+7. Once the ghosts were created, I needed to give them movement by randomizing their next position. This was harder than it seemed as the ghosts would often move back and forth, retracing their steps. So I instead used multiple if-else blocks as well as random move choices. Using these together to make the ghosts move along one path and only change direction at a junction. Although this if-else chain is long-winded, given more time I would have refactored them to be very much shorter and more concise.
 ```javascript
   const ghostMovementLogic = () => {
     ghostMovementInterval = setInterval(function() {
