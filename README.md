@@ -138,7 +138,7 @@ switch(e.keyCode) {
           loseConditionKeyCall()
         }
 ```
-5. PacMan and the ghosts' movement are based on iterating through the axes of the 2D array. This is displayed visually by painting the div at the coordinates of the previous position of the character (ghost or PacMan) black and painting the next position the color of that character, additionally, PacMan also has an integer value associated to it, where the 2D array is changed to this value to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on their respective classes called `moveDirection`. 
+5. PacMan and the ghosts' movement are based on iterating through the axis of the 2D array. This is displayed visually by painting the div at the coordinates of the previous position of the character (ghost or PacMan) black and painting the next position the color of that character, additionally, PacMan also has an integer value associated to it, where the 2D array is changed to this value to record the position of PacMan for later tracking. To prevent PacMan and the ghosts from walking through walls I used a function that exists on each object (PacMan or ghost) on their respective classes called `moveDirection`. 
 ```javascript
 moveDirection(x, y) {
       if (axis[this.positionY + y][this.positionX + x] === 1) {
