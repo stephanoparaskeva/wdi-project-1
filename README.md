@@ -101,7 +101,7 @@ const gameContainer = document.querySelector('.game-container')
     }
   }
 ```
-3. Next the map is drawn to the screen via iterating through both axes of the 2D array and colouring the div backgrounds based on the value of the integer. I decided to make the walls transparent and give the points a black background with a yellow dot in the center (representing a point).
+3. Next the map is drawn to the screen via iterating through both axis of the 2D array and colouring the div backgrounds based on the value of the integer. I decided to make the walls transparent and give the points a black background with a yellow dot in the center (representing a point).
 ```javascript
 htmlY.forEach(function(item) {
     for(let f = 0; f < axis[0].length; f++) {
